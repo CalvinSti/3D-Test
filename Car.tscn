@@ -1,0 +1,104 @@
+[gd_scene load_steps=6 format=3 uid="uid://f0ksna43wg02"]
+
+[ext_resource type="Script" uid="uid://he5t4lcsaahd" path="res://vehicle_body_3d.gd" id="1_1k6jk"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1k6jk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1k6jk"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_1k6jk"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4xowi"]
+
+[node name="VehicleBody3D" type="VehicleBody3D" groups=["Player"]]
+mass = 50.0
+physics_material_override = SubResource("PhysicsMaterial_1k6jk")
+gravity_scale = 4.0
+center_of_mass_mode = 1
+script = ExtResource("1_1k6jk")
+power = 1000
+steer = 1.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(8.775427, 0, 0, 0, 1, 0, 0, 0, 4.451671, 0, 3.3754506, 0)
+mesh = SubResource("BoxMesh_1k6jk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(8.775427, 0, 0, 0, 1, 0, 0, 0, 4.451671, 0, 3.3754506, 0)
+shape = SubResource("ConvexPolygonShape3D_1k6jk")
+
+[node name="VehicleWheel3D2" type="VehicleWheel3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4, 3, 3)
+use_as_traction = true
+wheel_roll_influence = 1.0
+wheel_radius = 1.5
+wheel_rest_length = 1.0
+wheel_friction_slip = 10.0
+suspension_travel = 2.0
+suspension_stiffness = 50.0
+suspension_max_force = 3500.0
+damping_compression = 3.0
+damping_relaxation = 4.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D2"]
+transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
+mesh = SubResource("CylinderMesh_4xowi")
+
+[node name="VehicleWheel3D3" type="VehicleWheel3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4, 3, -3)
+use_as_traction = true
+wheel_roll_influence = 1.0
+wheel_radius = 1.5
+wheel_rest_length = 1.0
+wheel_friction_slip = 10.0
+suspension_travel = 2.0
+suspension_stiffness = 50.0
+suspension_max_force = 3500.0
+damping_compression = 3.0
+damping_relaxation = 4.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D3"]
+transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
+mesh = SubResource("CylinderMesh_4xowi")
+
+[node name="VehicleWheel3D4" type="VehicleWheel3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 3, 3)
+use_as_steering = true
+wheel_roll_influence = 1.0
+wheel_radius = 1.5
+wheel_rest_length = 1.0
+wheel_friction_slip = 10.0
+suspension_travel = 2.0
+suspension_stiffness = 50.0
+suspension_max_force = 3500.0
+damping_compression = 3.0
+damping_relaxation = 4.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D4"]
+transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
+mesh = SubResource("CylinderMesh_4xowi")
+
+[node name="VehicleWheel3D5" type="VehicleWheel3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 3, -3)
+use_as_steering = true
+wheel_roll_influence = 1.0
+wheel_radius = 1.5
+wheel_rest_length = 1.0
+wheel_friction_slip = 10.0
+suspension_travel = 2.0
+suspension_stiffness = 50.0
+suspension_max_force = 3500.0
+damping_compression = 3.0
+damping_relaxation = 4.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D5"]
+transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
+mesh = SubResource("CylinderMesh_4xowi")
+
+[node name="Twist" type="Node3D" parent="."]
+
+[node name="Pivot" type="Node3D" parent="Twist"]
+
+[node name="Camera3D" type="Camera3D" parent="Twist/Pivot"]
+transform = Transform3D(-4.3085954e-08, 0.1685582, -0.9856917, 7.3679125e-09, 0.9856917, 0.1685582, 1, 0, -4.3711392e-08, -14, 9, 0)

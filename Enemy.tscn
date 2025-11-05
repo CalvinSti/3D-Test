@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bo78qh5l3xlb8"]
+
+[ext_resource type="Script" uid="uid://cj6jocggphlba" path="res://node_3d.gd" id="1_tt7e2"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tt7e2"]
+friction = 50.0
+rough = true
+bounce = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_s7bn3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tt7e2"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_2hac7"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[node name="Node3D" type="RigidBody3D" groups=["enemies"]]
+collision_layer = 3
+collision_mask = 3
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_tt7e2")
+gravity_scale = 5.0
+script = ExtResource("1_tt7e2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_s7bn3")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_tt7e2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_2hac7")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
