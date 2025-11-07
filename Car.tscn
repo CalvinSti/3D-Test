@@ -12,13 +12,14 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 [sub_resource type="CylinderMesh" id="CylinderMesh_4xowi"]
 
 [node name="VehicleBody3D" type="VehicleBody3D" groups=["Player"]]
-mass = 50.0
+transform = Transform3D(1, 7.351371e-08, 0, -7.351371e-08, 1, 0, 0, 0, 1, 0, 0, 0)
+mass = 250.0
 physics_material_override = SubResource("PhysicsMaterial_1k6jk")
 gravity_scale = 4.0
 center_of_mass_mode = 1
+center_of_mass = Vector3(0, 1, 0)
 script = ExtResource("1_1k6jk")
-power = 1000
-steer = 1.0
+power = 5000
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(8.775427, 0, 0, 0, 1, 0, 0, 0, 4.451671, 0, 3.3754506, 0)
@@ -35,11 +36,11 @@ wheel_roll_influence = 1.0
 wheel_radius = 1.5
 wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
-suspension_travel = 2.0
-suspension_stiffness = 50.0
-suspension_max_force = 3500.0
-damping_compression = 3.0
-damping_relaxation = 4.0
+suspension_travel = 5.0
+suspension_stiffness = 75.0
+suspension_max_force = 4000.0
+damping_compression = 4.0
+damping_relaxation = 5.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D2"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -52,11 +53,11 @@ wheel_roll_influence = 1.0
 wheel_radius = 1.5
 wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
-suspension_travel = 2.0
-suspension_stiffness = 50.0
-suspension_max_force = 3500.0
-damping_compression = 3.0
-damping_relaxation = 4.0
+suspension_travel = 5.0
+suspension_stiffness = 75.0
+suspension_max_force = 4000.0
+damping_compression = 4.0
+damping_relaxation = 5.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D3"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -69,11 +70,11 @@ wheel_roll_influence = 1.0
 wheel_radius = 1.5
 wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
-suspension_travel = 2.0
-suspension_stiffness = 50.0
-suspension_max_force = 3500.0
-damping_compression = 3.0
-damping_relaxation = 4.0
+suspension_travel = 5.0
+suspension_stiffness = 75.0
+suspension_max_force = 4000.0
+damping_compression = 4.0
+damping_relaxation = 5.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D4"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -86,11 +87,11 @@ wheel_roll_influence = 1.0
 wheel_radius = 1.5
 wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
-suspension_travel = 2.0
-suspension_stiffness = 50.0
-suspension_max_force = 3500.0
-damping_compression = 3.0
-damping_relaxation = 4.0
+suspension_travel = 5.0
+suspension_stiffness = 75.0
+suspension_max_force = 4000.0
+damping_compression = 4.0
+damping_relaxation = 5.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D5"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -101,4 +102,4 @@ mesh = SubResource("CylinderMesh_4xowi")
 [node name="Pivot" type="Node3D" parent="Twist"]
 
 [node name="Camera3D" type="Camera3D" parent="Twist/Pivot"]
-transform = Transform3D(-4.3085954e-08, 0.1685582, -0.9856917, 7.3679125e-09, 0.9856917, 0.1685582, 1, 0, -4.3711392e-08, -14, 9, 0)
+transform = Transform3D(-4.222196e-08, 0.25881904, -0.9659258, 1.1313339e-08, 0.9659258, 0.25881904, 1, -2.1175821e-22, -4.3711392e-08, -14, 9, 0)
