@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://da6yvkvmq6k8t"]
+
+[ext_resource type="Script" uid="uid://dltyjb1su8lqb" path="res://Total enemies.gd" id="1_tpeva"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_tpeva")

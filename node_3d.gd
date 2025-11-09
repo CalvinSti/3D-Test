@@ -17,15 +17,13 @@ func _ready() -> void:
 	fatass()
 	
 func _physics_process(delta: float) -> void:
-	var direction = position.direction_to(Car.global_position + Vector3(0, 75, 0)).normalized() 
+	var direction = position.direction_to(Car.global_position + Vector3(0, 15, 0)).normalized() 
 	if collided and hp > 0:
-		if linear_velocity.length() < 0.01 and timer.is_stopped() and angular_velocity.length() < 0.01:
+		if timer.is_stopped():
 			timer.start(3.0)
 	elif hp <= 0:
-		mesh.get_active_material(0).albedo_color = Color(1, 0, 0)
-		await get_tree().create_timer(5.0).timeout
-		queue_free()
-		return
+		timer.stop()
+		dead = true
 	else:
 		timer.stop()
 		var velocity = linear_velocity
@@ -41,18 +39,23 @@ func _physics_process(delta: float) -> void:
 func _on_body_entered(_body: Node) -> void:
 	if _body == player:
 		var damage = abs(player.linear_velocity.length())
+		timer.stop()
 		hp = hp - damage
-		if damage > hp / 4:
+		linear_velocity = - position.direction_to(Car.global_position).normalized() * abs(player.linear_velocity.length()) 
+		if damage > hp / 2:
 			var knockback_dir = - position.direction_to(Car.global_position).normalized()
-			var impulse = (knockback_dir + Vector3.UP * 0.5).normalized() * 15
+			var impulse = (knockback_dir + Vector3.UP * abs(player.linear_velocity.length()) ).normalized() * abs(player.linear_velocity.length())
 			apply_central_impulse(impulse * mass)
-			apply_torque_impulse(Vector3(randf(), randf(), randf()) * 10.0)
 			mesh.get_active_material(0).albedo_color = Color(0.879, 0.338, 0.0, 1.0)
 			collided = true
-	if _body == player and not collided and not dead:
-		timer.stop()
-	if _body == player and collided and not dead:
-		timer.stop()
+		if dead:
+			timer.stop()
+			mesh.get_active_material(0).albedo_color = Color(1, 0, 0)
+			await get_tree().create_timer(3.0).timeout
+			EnemyCount.enemies = EnemyCount.enemies - 1
+			print(EnemyCount.enemies)
+			queue_free()
+			return
 
 func fatass() -> void:
 	continuous_cd = true
@@ -63,10 +66,10 @@ func fatass() -> void:
 	hp = random * random
 	var base_speed = 300.0
 	speed = base_speed / sqrt(hp) - 5
-	mass = hp + mesh.scale.x + collision.scale.x
-	linear_damp = mesh.scale.x + collision.scale.x / hp
-	print("damp: ",linear_damp , " speed: ", speed , " mass: ", mass, " hp: ", hp)
-	var random_pos = Vector3(randf_range(-range, range), mesh.scale.length(), randf_range(-range, range))
+	mass = hp / 2.5
+	linear_damp = mesh.scale.x + collision.scale.x / (2 + mass + hp)
+	#print("damp: ",linear_damp , " speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
+	var random_pos = Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
 	global_position = random_pos
 	
 	timer.start(random * random - random)

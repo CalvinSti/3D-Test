@@ -13,9 +13,14 @@ func _process(delta: float) -> void:
 	random = randf_range(1, 5)
 
 func spawn_idiots(delta: float) -> void:
-	for i in range(random):
-		var enemy_instance = enemy_scene.instantiate()
-		add_child(enemy_instance)
+	if EnemyCount.enemies < 30:
+		for i in range(random):
+			var enemy_instance = enemy_scene.instantiate()
+			add_child(enemy_instance)
+			EnemyCount.enemies = EnemyCount.enemies + 1
+			print(EnemyCount.enemies)
+	else:
+		return
 	timer.start(random * random - random)
 
 func _on_timer_timeout() -> void:

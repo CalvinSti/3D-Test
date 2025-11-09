@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://f0ksna43wg02"]
+[gd_scene load_steps=7 format=3 uid="uid://f0ksna43wg02"]
 
 [ext_resource type="Script" uid="uid://he5t4lcsaahd" path="res://vehicle_body_3d.gd" id="1_1k6jk"]
+[ext_resource type="PackedScene" uid="uid://crs0jy5cyw5kv" path="res://Projectile.tscn" id="2_y2uan"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1k6jk"]
 
@@ -17,9 +18,10 @@ mass = 250.0
 physics_material_override = SubResource("PhysicsMaterial_1k6jk")
 gravity_scale = 4.0
 center_of_mass_mode = 1
-center_of_mass = Vector3(0, 1, 0)
+center_of_mass = Vector3(0, 0.5, 0)
 script = ExtResource("1_1k6jk")
-power = 5000
+power = 10000
+projectile = ExtResource("2_y2uan")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(8.775427, 0, 0, 0, 1, 0, 0, 0, 4.451671, 0, 3.3754506, 0)
@@ -38,9 +40,9 @@ wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
 suspension_travel = 5.0
 suspension_stiffness = 75.0
-suspension_max_force = 4000.0
-damping_compression = 4.0
-damping_relaxation = 5.0
+suspension_max_force = 5000.0
+damping_compression = 3.0
+damping_relaxation = 4.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D2"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -55,9 +57,9 @@ wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
 suspension_travel = 5.0
 suspension_stiffness = 75.0
-suspension_max_force = 4000.0
-damping_compression = 4.0
-damping_relaxation = 5.0
+suspension_max_force = 5000.0
+damping_compression = 3.0
+damping_relaxation = 4.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D3"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -72,9 +74,9 @@ wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
 suspension_travel = 5.0
 suspension_stiffness = 75.0
-suspension_max_force = 4000.0
-damping_compression = 4.0
-damping_relaxation = 5.0
+suspension_max_force = 5000.0
+damping_compression = 3.0
+damping_relaxation = 4.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D4"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -89,9 +91,9 @@ wheel_rest_length = 1.0
 wheel_friction_slip = 10.0
 suspension_travel = 5.0
 suspension_stiffness = 75.0
-suspension_max_force = 4000.0
-damping_compression = 4.0
-damping_relaxation = 5.0
+suspension_max_force = 5000.0
+damping_compression = 3.0
+damping_relaxation = 4.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleWheel3D5"]
 transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e-08, 1.293857e-07, -1.2938571e-07, -1.2938571e-08, 2.96, 0, 0, 0)
@@ -103,3 +105,7 @@ mesh = SubResource("CylinderMesh_4xowi")
 
 [node name="Camera3D" type="Camera3D" parent="Twist/Pivot"]
 transform = Transform3D(-4.222196e-08, 0.25881904, -0.9659258, 1.1313339e-08, 0.9659258, 0.25881904, 1, -2.1175821e-22, -4.3711392e-08, -14, 9, 0)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

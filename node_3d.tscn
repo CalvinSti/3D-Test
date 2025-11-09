@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://ddf3rnkg4j1ua"]
 
-[ext_resource type="Script" uid="uid://crcvgr806foex" path="res://World.gd" id="1_a0tk4"]
+[ext_resource type="Script" uid="uid://dbfcmwi61iwtm" path="res://World.gd" id="1_a0tk4"]
 [ext_resource type="Texture2D" uid="uid://dxhre20hrr6o" path="res://texture_08.png" id="1_noarx"]
 [ext_resource type="PackedScene" uid="uid://bo78qh5l3xlb8" path="res://Enemy.tscn" id="3_a0tk4"]
 
@@ -29,9 +29,10 @@ uv2_triplanar = true
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_a202f"]
 data = PackedVector3Array(10.6375, 0, 10.1075, -10.6375, 0, 10.1075, 10.6375, 0, -10.1075, -10.6375, 0, 10.1075, -10.6375, 0, -10.1075, 10.6375, 0, -10.1075)
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D2" type="Node3D"]
 script = ExtResource("1_a0tk4")
 enemy_scene = ExtResource("3_a0tk4")
+difficulty = 10.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_noarx")

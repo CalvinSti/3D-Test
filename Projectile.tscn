@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://crs0jy5cyw5kv"]
+
+[ext_resource type="Script" uid="uid://b821carf2lco8" path="res://projectile.gd" id="1_e7peq"]
+[ext_resource type="PackedScene" uid="uid://bo78qh5l3xlb8" path="res://Enemy.tscn" id="2_1cf02"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xh6v2"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_3rnyv"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+
+[node name="Node3D" type="RigidBody3D"]
+script = ExtResource("1_e7peq")
+enemy = ExtResource("2_1cf02")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.24, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0, 0, 0)
+mesh = SubResource("BoxMesh_xh6v2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(2.24, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_3rnyv")
