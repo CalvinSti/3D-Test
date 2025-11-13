@@ -14,14 +14,15 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 
 [node name="VehicleBody3D" type="VehicleBody3D" groups=["Player"]]
 transform = Transform3D(1, 7.351371e-08, 0, -7.351371e-08, 1, 0, 0, 0, 1, 0, 0, 0)
-mass = 250.0
+mass = 75.0
 physics_material_override = SubResource("PhysicsMaterial_1k6jk")
 gravity_scale = 4.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.5, 0)
 script = ExtResource("1_1k6jk")
-power = 10000
+power = 3000
 projectile = ExtResource("2_y2uan")
+repel_range = 200.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(8.775427, 0, 0, 0, 1, 0, 0, 0, 4.451671, 0, 3.3754506, 0)

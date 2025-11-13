@@ -5,9 +5,15 @@ var hp = 100
 var speed := 25
 var collided = false
 var dead = false
+var repelled = false
+var just_repelled = false
+
 @onready var timer = $Timer
 @onready var mesh = $MeshInstance3D
 @onready var collision = $CollisionShape3D
+
+@export var repel_range := 10.0
+@export var repel_strength := 100.0
 
 func _ready() -> void:
 	contact_monitor = true
@@ -15,9 +21,10 @@ func _ready() -> void:
 	mesh.material_override = mesh.get_active_material(0).duplicate()
 	continuous_cd = true
 	fatass()
+	add_to_group("enemies")
 	
 func _physics_process(delta: float) -> void:
-	var direction = position.direction_to(Car.global_position + Vector3(0, 15, 0)).normalized() 
+	var direction = position.direction_to(player.global_position).normalized() 
 	if collided and hp > 0:
 		if timer.is_stopped():
 			timer.start(3.0)
@@ -29,51 +36,72 @@ func _physics_process(delta: float) -> void:
 		var velocity = linear_velocity
 		var horizontal = Vector3(direction.x, 0, direction.z) * speed
 		mesh.get_active_material(0).albedo_color = Color(1.0, 1.0, 1.0, 1.0)
-		velocity.x = horizontal.x
-		velocity.z = horizontal.z
-		linear_velocity = velocity
 		
-	#print(collided,"  ", angular_velocity.length(), "  ", linear_velocity.length())
-	#print(timer.time_left)
+		for body in get_tree().get_nodes_in_group("Player"):
+			var dir = position - body.global_position
+			var distance = dir.length()
+			if distance < repel_range:
+				linear_velocity *= 0.999
+				angular_velocity *= 0.99
+				gravity_scale = 0
+				linear_damp = 3
+				angular_damp = 0.5
+				just_repelled = true
+				repelled = true
+			else:
+				repelled = false
+				gravity_scale = 6
+				linear_damp = 0
+				angular_damp = 0
+				
+		if repelled:
+			return
+		elif not repelled and just_repelled:
+			await get_tree().create_timer(0.5).timeout
+			just_repelled = false
+		else:
+			velocity.x = horizontal.x
+			velocity.z = horizontal.z
+			linear_velocity = velocity
+
+	if dead:
+		timer.stop()
+		mesh.get_active_material(0).albedo_color = Color(1, 0, 0)
+		await get_tree().create_timer(5.0).timeout
+		EnemyCount.enemies = EnemyCount.enemies - 1
+		queue_free()
+		return
+		
+	if global_position.y <= -50:
+		queue_free()
 	
 func _on_body_entered(_body: Node) -> void:
 	if _body == player:
 		var damage = abs(player.linear_velocity.length())
 		timer.stop()
 		hp = hp - damage
-		linear_velocity = - position.direction_to(Car.global_position).normalized() * abs(player.linear_velocity.length()) 
+		linear_velocity = - position.direction_to(player.global_position).normalized() * 5
 		if damage > hp / 2:
-			var knockback_dir = - position.direction_to(Car.global_position).normalized()
-			var impulse = (knockback_dir + Vector3.UP * abs(player.linear_velocity.length()) ).normalized() * abs(player.linear_velocity.length())
+			var knockback_dir = - position.direction_to(player.global_position).normalized()
+			var impulse = (knockback_dir + Vector3.UP * abs(player.linear_velocity.length()) ).normalized() * 25
 			apply_central_impulse(impulse * mass)
 			mesh.get_active_material(0).albedo_color = Color(0.879, 0.338, 0.0, 1.0)
 			collided = true
-		if dead:
 			timer.stop()
-			mesh.get_active_material(0).albedo_color = Color(1, 0, 0)
-			await get_tree().create_timer(3.0).timeout
-			EnemyCount.enemies = EnemyCount.enemies - 1
-			print(EnemyCount.enemies)
-			queue_free()
-			return
 
 func fatass() -> void:
 	continuous_cd = true
-	var random = randf_range(1.0, 25.0)
+	var random = randf_range(1.5, 15.5)
 	var range = 300
 	mesh.scale = Vector3(random, random, random)
 	collision.scale = Vector3(random, random, random)
 	hp = random * random
 	var base_speed = 300.0
-	speed = base_speed / sqrt(hp) - 5
-	mass = hp / 2.5
-	linear_damp = mesh.scale.x + collision.scale.x / (2 + mass + hp)
-	#print("damp: ",linear_damp , " speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
+	speed = base_speed / sqrt(hp)
+	mass = hp / 1.5
+	#print(" speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
 	var random_pos = Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
 	global_position = random_pos
-	
-	timer.start(random * random - random)
-	
 	
 func _on_timer_timeout() -> void:
 	collided = false
