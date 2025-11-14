@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxwt4ovrd3063"]
+[gd_scene load_steps=9 format=3 uid="uid://cp730g5dk3fvt"]
 
+[ext_resource type="Script" uid="uid://dsbybcqwo8x3p" path="res://main_menu.gd" id="1_gewly"]
 [ext_resource type="Texture2D" uid="uid://dxhre20hrr6o" path="res://texture_08.png" id="1_jlh7t"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gewly"]
@@ -28,6 +29,7 @@ uv2_triplanar = true
 data = PackedVector3Array(10.6375, 0, 10.1075, -10.6375, 0, 10.1075, 10.6375, 0, -10.1075, -10.6375, 0, 10.1075, -10.6375, 0, -10.1075, 10.6375, 0, -10.1075)
 
 [node name="Menu" type="Node3D"]
+script = ExtResource("1_gewly")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_aqwir")

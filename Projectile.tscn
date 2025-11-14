@@ -1,21 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://crs0jy5cyw5kv"]
+[gd_scene load_steps=4 format=3 uid="uid://crs0jy5cyw5kv"]
 
 [ext_resource type="Script" uid="uid://b821carf2lco8" path="res://projectile.gd" id="1_e7peq"]
-[ext_resource type="PackedScene" uid="uid://bo78qh5l3xlb8" path="res://Enemy.tscn" id="2_1cf02"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_xh6v2"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_3rnyv"]
-points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+[sub_resource type="BoxShape3D" id="BoxShape3D_t7eop"]
 
-[node name="Node3D" type="RigidBody3D"]
+[node name="Node3D" type="RigidBody3D" groups=["projectile"]]
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_e7peq")
-enemy = ExtResource("2_1cf02")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(2.24, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0, 0, 0)
+transform = Transform3D(2.3386025, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_xh6v2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(2.24, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_3rnyv")
+transform = Transform3D(2.2949219, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_t7eop")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

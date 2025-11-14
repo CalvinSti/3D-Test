@@ -14,12 +14,12 @@ bounce = 1.0
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_2hac7"]
 points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
 
-[node name="Node3D" type="RigidBody3D"]
+[node name="Node3D" type="RigidBody3D" groups=["enemies"]]
 physics_material_override = SubResource("PhysicsMaterial_tt7e2")
 gravity_scale = 6.0
 continuous_cd = true
 contact_monitor = true
-max_contacts_reported = 8
+max_contacts_reported = 1
 script = ExtResource("1_tt7e2")
 repel_range = 50.0
 

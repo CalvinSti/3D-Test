@@ -23,6 +23,7 @@ script = ExtResource("1_1k6jk")
 power = 3000
 projectile = ExtResource("2_y2uan")
 repel_range = 200.0
+projectile_count = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(8.775427, 0, 0, 0, 1, 0, 0, 0, 4.451671, 0, 3.3754506, 0)

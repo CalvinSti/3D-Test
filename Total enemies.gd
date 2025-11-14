@@ -1,5 +1,6 @@
 extends Node
 var enemies = 0
+var kills = 0
 
 
 func _ready() -> void:

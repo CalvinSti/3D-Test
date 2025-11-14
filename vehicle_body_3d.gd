@@ -15,11 +15,12 @@ var twist_pivot := 0.0
 var vertical_pivot := 0.0
 var ragdoll = false
 var player_hp := 100.0
+@export var projectile_count = 1
 
 func _ready() -> void:
 	add_to_group("Player")
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	timer.start(5.0)
+	timer.start(2)
 
 func _physics_process(delta: float) -> void:
 	
@@ -33,7 +34,9 @@ func _physics_process(delta: float) -> void:
 	vertical_pivot = 0.0
 	$Twist/Pivot.rotation_degrees.z = clamp($Twist/Pivot.rotation_degrees.z, -40, 25)
 	$Twist/Pivot.rotation_degrees.x = clamp($Twist/Pivot.rotation_degrees.x, 0, 0)
-
+	
+	#if EnemyCount.kills > 30:
+		#add_to_group("Infinity")
 
 	if Input.is_action_just_pressed("R"):
 		rotation.z = 0
@@ -47,6 +50,9 @@ func _physics_process(delta: float) -> void:
 	var speed = linear_velocity
 	if Input.is_action_pressed("Brake"):
 		linear_velocity *= Vector3(0.995, 0, 0.995)
+		gravity_scale = 0
+	else:
+		gravity_scale = 4
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -56,7 +62,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_timer_timeout() -> void:
-	var instance = projectile.instantiate()
-	add_child(instance)
-	timer.start(5.0)
+	if EnemyCount.enemies <= 0:
+		pass
+	else:
+		for i in projectile_count:
+			var instance = projectile.instantiate()
+			add_sibling(instance)
+			timer.start(1.5)
 	
