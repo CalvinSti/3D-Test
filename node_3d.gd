@@ -102,6 +102,9 @@ func _on_body_entered(_body: Node) -> void:
 	if _body.is_in_group("projectile"):
 		var damage = abs(_body.linear_velocity.length())
 		hp = hp - damage
+		
+	if _body.is_in_group("Purple"):
+		hp = hp - hp
 func fatass() -> void:
 	continuous_cd = true
 	var random = randf_range(1.5, 15.5)

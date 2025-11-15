@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cp730g5dk3fvt"]
+[gd_scene load_steps=9 format=3 uid="uid://cxwt4ovrd3063"]
 
 [ext_resource type="Script" uid="uid://dsbybcqwo8x3p" path="res://main_menu.gd" id="1_gewly"]
 [ext_resource type="Texture2D" uid="uid://dxhre20hrr6o" path="res://texture_08.png" id="1_jlh7t"]
@@ -36,6 +36,7 @@ environment = SubResource("Environment_aqwir")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_color = Color(0.601223, 0.601223, 0.60122293, 1)
 shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
