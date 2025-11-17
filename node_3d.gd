@@ -21,7 +21,6 @@ func _ready() -> void:
 	mesh.material_override = mesh.get_active_material(0).duplicate()
 	fatass()
 	add_to_group("enemies")
-	EnemyCount.enemies += 1
 	
 func _physics_process(delta: float) -> void:
 	var direction = position.direction_to(player.global_position).normalized() 
@@ -75,8 +74,12 @@ func _physics_process(delta: float) -> void:
 		await get_tree().create_timer(2).timeout
 		EnemyCount.enemies -= 1
 		EnemyCount.kills += 1
-		queue_free()
-		pass
+		collision.disabled = true
+		visible = false
+		var random = randf_range(1, 10)
+		await get_tree().create_timer(random * random - random).timeout
+		fatass()
+		return
 		
 	if global_position.y <= -50:
 		queue_free()
@@ -85,7 +88,6 @@ func _on_body_entered(_body: Node) -> void:
 	if _body == player and not damage_taken:
 		damage_taken = true
 		var damage = abs(player.linear_velocity.length())
-		print(damage)
 		timer.stop()
 		hp = hp - damage
 		linear_velocity = - position.direction_to(player.global_position).normalized() * 5
@@ -105,8 +107,17 @@ func _on_body_entered(_body: Node) -> void:
 		
 	if _body.is_in_group("Purple"):
 		hp = hp - hp
+
 func fatass() -> void:
-	continuous_cd = true
+	visible = true
+	collision.disabled = false
+	damage_taken = false
+	already_dead = false
+	dead = false
+	just_repelled = false
+	repelled = false
+	EnemyCount.enemies += 1
+	remove_from_group("ded")
 	var random = randf_range(1.5, 15.5)
 	var range = 300
 	mesh.scale = Vector3(random, random, random)

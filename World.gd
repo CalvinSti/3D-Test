@@ -1,13 +1,14 @@
 extends Node3D
 
-@export var enemy_scene: PackedScene
-@export var spawn_range: float = 300
+@onready var enemy_scene: PackedScene = preload("res://Enemy.tscn")
 @onready var timer: Timer = $Timer
 var random = 0
 
 
 func _ready() -> void:
+	timer.wait_time = 1.0
 	timer.start()
+	
 
 func _process(delta: float) -> void:
 	random = randf_range(1, 10)
@@ -20,6 +21,7 @@ func spawn_idiots(delta: float) -> void:
 			else:
 				var enemy_instance = enemy_scene.instantiate()
 				add_child(enemy_instance)
+				await get_tree().process_frame
 	else:
 		return
 	timer.start(random)

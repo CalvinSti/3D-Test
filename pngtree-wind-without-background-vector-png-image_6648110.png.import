@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxhre20hrr6o"
-path.s3tc="res://.godot/imported/texture_08.png-96489dfed1b75862b79c683916e1d0d6.s3tc.ctex"
-path.etc2="res://.godot/imported/texture_08.png-96489dfed1b75862b79c683916e1d0d6.etc2.ctex"
+uid="uid://dbdtd362woy7t"
+path.s3tc="res://.godot/imported/pngtree-wind-without-background-vector-png-image_6648110.png-c1d7fd7c21feaf35e23e2f2ab2bf2b34.s3tc.ctex"
+path.etc2="res://.godot/imported/pngtree-wind-without-background-vector-png-image_6648110.png-c1d7fd7c21feaf35e23e2f2ab2bf2b34.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://texture_08.png"
-dest_files=["res://.godot/imported/texture_08.png-96489dfed1b75862b79c683916e1d0d6.s3tc.ctex", "res://.godot/imported/texture_08.png-96489dfed1b75862b79c683916e1d0d6.etc2.ctex"]
+source_file="res://pngtree-wind-without-background-vector-png-image_6648110.png"
+dest_files=["res://.godot/imported/pngtree-wind-without-background-vector-png-image_6648110.png-c1d7fd7c21feaf35e23e2f2ab2bf2b34.s3tc.ctex", "res://.godot/imported/pngtree-wind-without-background-vector-png-image_6648110.png-c1d7fd7c21feaf35e23e2f2ab2bf2b34.etc2.ctex"]
 
 [params]
 

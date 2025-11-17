@@ -1,11 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://f0ksna43wg02"]
+[gd_scene load_steps=6 format=3 uid="uid://f0ksna43wg02"]
 
 [ext_resource type="Script" uid="uid://he5t4lcsaahd" path="res://vehicle_body_3d.gd" id="1_1k6jk"]
-[ext_resource type="PackedScene" uid="uid://crs0jy5cyw5kv" path="res://Projectile.tscn" id="2_y2uan"]
-[ext_resource type="PackedScene" uid="uid://wx2k6jypw8ka" path="res://Hollow-Purple.tscn" id="3_gvgjh"]
-[ext_resource type="PackedScene" uid="uid://ccge77qigt7p0" path="res://blue.tscn" id="4_47788"]
-[ext_resource type="PackedScene" uid="uid://c7a5agbyqx2ax" path="res://Red.tscn" id="5_eryuy"]
-[ext_resource type="PackedScene" uid="uid://chrljfi4d1lc2" path="res://Purple.tscn" id="6_eryuy"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1k6jk"]
 
@@ -25,11 +20,6 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.5, 0)
 script = ExtResource("1_1k6jk")
 power = 3000
-projectile = ExtResource("2_y2uan")
-ability = ExtResource("3_gvgjh")
-blue = ExtResource("4_47788")
-red = ExtResource("5_eryuy")
-purple = ExtResource("6_eryuy")
 projectile_count = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -112,7 +102,7 @@ mesh = SubResource("CylinderMesh_4xowi")
 
 [node name="Pivot" type="Node3D" parent="Twist"]
 
-[node name="Camera3D" type="Camera3D" parent="Twist/Pivot"]
+[node name="Camera3D" type="Camera3D" parent="Twist/Pivot" groups=["Player"]]
 transform = Transform3D(-4.222196e-08, 0.25881904, -0.9659258, 1.1313339e-08, 0.9659258, 0.25881904, 1, -2.1175821e-22, -4.3711392e-08, -14, 9, 0)
 
 [node name="Timer" type="Timer" parent="."]
