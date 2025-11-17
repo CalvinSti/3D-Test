@@ -9,6 +9,7 @@ var repelled = false
 var just_repelled = false
 var already_dead = false
 var damage_taken = false
+var random := 0
 
 @onready var timer = $Timer
 @onready var mesh = $MeshInstance3D
@@ -62,7 +63,7 @@ func _physics_process(delta: float) -> void:
 			velocity.x = horizontal.x
 			velocity.z = horizontal.z
 			linear_velocity = velocity
-
+	random = randf_range(1, 10)
 	if dead and not already_dead:
 		already_dead = true
 		timer.stop()
@@ -71,12 +72,11 @@ func _physics_process(delta: float) -> void:
 		angular_damp = 0
 		mesh.get_active_material(0).albedo_color = Color(1, 0, 0)
 		add_to_group("ded")
-		await get_tree().create_timer(2).timeout
 		EnemyCount.enemies -= 1
 		EnemyCount.kills += 1
+		await get_tree().create_timer(2).timeout
 		collision.disabled = true
 		visible = false
-		var random = randf_range(1, 10)
 		await get_tree().create_timer(random * random - random).timeout
 		fatass()
 		return

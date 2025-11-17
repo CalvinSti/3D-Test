@@ -6,7 +6,6 @@ var random = 0
 
 
 func _ready() -> void:
-	timer.wait_time = 1.0
 	timer.start()
 	
 
@@ -24,7 +23,7 @@ func spawn_idiots(delta: float) -> void:
 				await get_tree().process_frame
 	else:
 		return
-	timer.start(random)
+	timer.start(random * random / random)
 
 
 func _on_timer_timeout() -> void:

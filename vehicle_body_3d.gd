@@ -3,6 +3,7 @@ extends VehicleBody3D
 @export var power := 100
 @export var steer := 0.5
 @export var sensitivity := 0.1
+@onready var wheels = get_tree().get_nodes_in_group("wheel")
 
 @onready var timer = $Timer
 @onready var camera = $Twist/Pivot/Camera3D
@@ -16,6 +17,7 @@ var vertical_pivot := 0.0
 var ragdoll = false
 var player_hp := 100.0
 var ability_active = false
+var drifting = false
 
 @export var projectile_count = 1
 
@@ -28,9 +30,6 @@ func _physics_process(delta: float) -> void:
 	if not ability_active:
 		steering = - move_toward(steering, Input.get_axis("Left", "Right") * steer, delta + 10)
 		engine_force = Input.get_axis("Back", "Forward") * power
-		
-	#if EnemyCount.kills > 30:
-		#add_to_group("Infinity")
 
 	if Input.is_action_just_pressed("R"):
 		rotation.z = 0
@@ -46,7 +45,20 @@ func _physics_process(delta: float) -> void:
 		gravity_scale = 0
 	else:
 		gravity_scale = 4
+	if Input.is_action_pressed("drift"):
+		drifting = true
+	else: 
+		drifting = false
+		
 	
+	if drifting:
+		for wheel in wheels:
+			wheel.wheel_friction_slip = 3
+	else:
+		for wheel in wheels:
+			wheel.wheel_friction_slip = 10
+			
+			
 	if Input.is_action_just_pressed("Ability") and not ability_active:
 		ability_active = true
 		add_to_group("Infinity")
@@ -75,12 +87,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			twist_pivot = -  event.relative.x * sensitivity
 			vertical_pivot = - event.relative.y * sensitivity
 
-#func _on_timer_timeout() -> void:
-	#if EnemyCount.enemies <= 0 or ability_active:
-		#pass
-	#else:
-		#for i in projectile_count:
-			#var instance = Projectile.instantiate()
-			#add_sibling(instance)
-			#timer.start(1.5)
+func _on_timer_timeout() -> void:
+	if EnemyCount.enemies <= 0 or ability_active:
+		pass
+	else:
+		for i in projectile_count:
+			var instance = Projectile.instantiate()
+			add_sibling(instance)
+			timer.start(1.5)
 	

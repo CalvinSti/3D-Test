@@ -22,7 +22,9 @@ func _physics_process(delta: float) -> void:
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy.is_in_group("ded"):
 			continue
-			
+		if EnemyCount.enemies <= 0 or Car.ability_active == true:
+			queue_free()
+		
 		var dist = global_position.distance_to(enemy.global_position)
 		if dist < closest_dist:
 			closest_dist = dist

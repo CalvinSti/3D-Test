@@ -9,6 +9,7 @@ extends Node3D
 @onready var timer = $Timer
 
 var e = false
+var a = false
 var scaling = false
 
 func _ready() -> void:
@@ -26,6 +27,8 @@ func Start():
 
 	Blue.global_position = Car.global_position - Car.global_transform.basis.z.normalized() * 10 + Vector3(0,5,0)
 	Red.global_position = Car.global_position + Car.global_transform.basis.z.normalized() * 10 + Vector3(0,5,0)
+	
+	a = true
 	
 	await get_tree().create_timer(4).timeout
 	e = true
@@ -61,7 +64,7 @@ func _process(delta: float) -> void:
 			scaling = true
 			await get_tree().create_timer(2).timeout
 			for i in range(10):
-				scale *= Vector3(5, 5, 5)
+				scale *= Vector3(6.5, 6.5, 6.5)
 				explosion.radius *= 1000
 				await get_tree().create_timer(0.001).timeout
 			await get_tree().create_timer(0.5).timeout
@@ -72,6 +75,11 @@ func _process(delta: float) -> void:
 			queue_free()
 
 	if scaling:
-		Purple.scale = Purple.scale.lerp(Vector3(10, 10, 10), delta * 0.3)
+		Purple.scale = Purple.scale.lerp(Vector3(12.5, 12.5, 12.5), delta * 0.35)
 		await get_tree().create_timer(2).timeout
 		scaling = false
+	if a:
+		Blue.scale = Red.scale.lerp(Vector3(2.5, 2.5, 2.5), delta * 0.45)
+		Red.scale = Red.scale.lerp(Vector3(2.5, 2.5, 2.5), delta * 0.45)
+		await get_tree().create_timer(2).timeout
+		a = false
