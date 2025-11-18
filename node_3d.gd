@@ -10,10 +10,13 @@ var just_repelled = false
 var already_dead = false
 var damage_taken = false
 var random := 0
+var is_teto = false
 
 @onready var timer = $Timer
 @onready var mesh = $MeshInstance3D
 @onready var collision = $CollisionShape3D
+@onready var fatass_teto_2 = $"fatass teto2"
+
 
 @export var repel_range := 10.0
 @export var repel_strength := 100.0
@@ -37,8 +40,8 @@ func _physics_process(delta: float) -> void:
 		var horizontal = Vector3(direction.x, 0, direction.z) * speed
 		mesh.get_active_material(0).albedo_color = Color(1.0, 1.0, 1.0, 1.0)
 		
-		for body in get_tree().get_nodes_in_group("Infinity"):
-			var dir = position - body.global_position
+		if Car.ability_active == true:
+			var dir = position - Car.global_position
 			var distance = dir.length()
 			if distance < repel_range:
 				linear_velocity *= 0.999
@@ -48,11 +51,11 @@ func _physics_process(delta: float) -> void:
 				angular_damp = 0.5
 				just_repelled = true
 				repelled = true
-			else:
-				repelled = false
-				gravity_scale = 6
-				linear_damp = 0
-				angular_damp = 0
+		else:
+			repelled = false
+			gravity_scale = 6
+			linear_damp = 0
+			angular_damp = 0
 				
 		if repelled:
 			return
@@ -103,10 +106,13 @@ func _on_body_entered(_body: Node) -> void:
 		
 	if _body.is_in_group("projectile"):
 		var damage = abs(_body.linear_velocity.length())
-		hp = hp - damage
+		hp = hp - (damage / 2.5)
 		
 	if _body.is_in_group("Purple"):
-		hp = hp - hp
+		if is_teto:
+			return
+		else:
+			hp = 0
 
 func fatass() -> void:
 	visible = true
@@ -122,10 +128,24 @@ func fatass() -> void:
 	var range = 300
 	mesh.scale = Vector3(random, random, random)
 	collision.scale = Vector3(random, random, random)
+	fatass_teto_2.scale = mesh.scale / 12
 	hp = random * random
 	var base_speed = 300.0
-	speed = base_speed / sqrt(hp)
-	mass = hp / 1.5
+	var teto_chance = randi_range(1,150)
+	if teto_chance >= 145:
+		hp = random * random * random
+		mass = hp * 6
+		fatass_teto_2.visible = true
+		mesh.visible = false
+		is_teto = true
+		speed = base_speed / (sqrt(hp) - 7)
+	else:
+		hp = random * random
+		mass = hp / 1.5
+		fatass_teto_2.visible = false
+		mesh.visible = true
+		is_teto = false
+		speed = base_speed / sqrt(hp)
 	#print(" speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
 	var random_pos = Car.global_position + Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
 	global_position = random_pos

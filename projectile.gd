@@ -2,7 +2,7 @@ extends RigidBody3D
 
 @onready var mesh: MeshInstance3D = $MeshInstance3D
 
-var speed  = 60
+var speed  = 100
 
 func _ready() -> void:
 	contact_monitor = true
@@ -11,7 +11,6 @@ func _ready() -> void:
 	var random = randf_range(1 , 20)
 	global_position = Car.global_position + Vector3(randf_range(-random, random), 0, randf_range(-random, random))
 	global_position.y += 5
-	print(random)
 	add_to_group("projectile")
 	
 

@@ -1,12 +1,14 @@
 extends VehicleBody3D
 
 @export var power := 100
-@export var steer := 0.5
+@export var steer := 0.7
 @export var sensitivity := 0.1
-@onready var wheels = get_tree().get_nodes_in_group("wheel")
+@export var wheels: Array[VehicleWheel3D]
 
 @onready var timer = $Timer
 @onready var camera = $Twist/Pivot/Camera3D
+
+@export var grip: Curve
 
 const Purple = preload("uid://wx2k6jypw8ka")
 const Projectile = preload("uid://crs0jy5cyw5kv")
@@ -28,7 +30,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not ability_active:
-		steering = - move_toward(steering, Input.get_axis("Left", "Right") * steer, delta + 10)
+		steering = move_toward(steering,Input.get_axis("Left", "Right") * steer, delta * 3.5)
 		engine_force = Input.get_axis("Back", "Forward") * power
 
 	if Input.is_action_just_pressed("R"):
@@ -50,15 +52,21 @@ func _physics_process(delta: float) -> void:
 	else: 
 		drifting = false
 		
-	
+		
+
 	if drifting:
 		for wheel in wheels:
-			wheel.wheel_friction_slip = 3
+			#var slip = abs(steering) 
+			#slip = clamp(slip, 0.0, 1.0)
+			#var friction = grip.sample_baked(slip)
+			#wheel.wheel_friction_slip = friction
+			#print(wheel.wheel_friction_slip)
+			pass
 	else:
 		for wheel in wheels:
-			wheel.wheel_friction_slip = 10
-			
-			
+			#wheel.wheel_friction_slip = 1
+			pass
+
 	if Input.is_action_just_pressed("Ability") and not ability_active:
 		ability_active = true
 		add_to_group("Infinity")
@@ -80,7 +88,10 @@ func _physics_process(delta: float) -> void:
 	vertical_pivot = 0.0
 	$Twist/Pivot.rotation_degrees.z = clamp($Twist/Pivot.rotation_degrees.z, -40, 25)
 	$Twist/Pivot.rotation_degrees.x = clamp($Twist/Pivot.rotation_degrees.x, 0, 0)
-		
+
+func _get_point_velocity(point: Vector3) -> Vector3:
+	return linear_velocity + angular_velocity.cross(point - global_position)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -94,5 +105,5 @@ func _on_timer_timeout() -> void:
 		for i in projectile_count:
 			var instance = Projectile.instantiate()
 			add_sibling(instance)
-			timer.start(1.5)
+			timer.start(1)
 	

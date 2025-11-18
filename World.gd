@@ -23,8 +23,7 @@ func spawn_idiots(delta: float) -> void:
 				await get_tree().process_frame
 	else:
 		return
-	timer.start(random * random / random)
-
 
 func _on_timer_timeout() -> void:
 	spawn_idiots(random)
+	timer.start(random * random / random)
