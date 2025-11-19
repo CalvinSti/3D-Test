@@ -47,6 +47,7 @@ projectile=""
 ded=""
 Purple=""
 wheel=""
+floor=""
 
 [input]
 
@@ -106,6 +107,7 @@ drift={
 common/physics_ticks_per_second=300
 common/max_physics_steps_per_frame=50
 common/physics_jitter_fix=2.0
+3d/physics_engine="Jolt Physics"
 common/physics_interpolation=true
 
 [rendering]

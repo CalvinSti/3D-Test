@@ -11,6 +11,7 @@ var already_dead = false
 var damage_taken = false
 var random := 0
 var is_teto = false
+var eHp
 
 @onready var timer = $Timer
 @onready var mesh = $MeshInstance3D
@@ -23,10 +24,12 @@ var is_teto = false
 
 func _ready() -> void:
 	mesh.material_override = mesh.get_active_material(0).duplicate()
-	fatass()
 	add_to_group("enemies")
+	fatass()
 	
 func _physics_process(delta: float) -> void:
+	if Car.dead:
+		return
 	var direction = position.direction_to(player.global_position).normalized() 
 	if collided and hp > 0:
 		if timer.is_stopped():
@@ -66,7 +69,9 @@ func _physics_process(delta: float) -> void:
 			velocity.x = horizontal.x
 			velocity.z = horizontal.z
 			linear_velocity = velocity
+			
 	random = randf_range(1, 10)
+	
 	if dead and not already_dead:
 		already_dead = true
 		timer.stop()
@@ -75,6 +80,7 @@ func _physics_process(delta: float) -> void:
 		angular_damp = 0
 		mesh.get_active_material(0).albedo_color = Color(1, 0, 0)
 		add_to_group("ded")
+		remove_from_group("enemies")
 		EnemyCount.enemies -= 1
 		EnemyCount.kills += 1
 		await get_tree().create_timer(2).timeout
@@ -115,6 +121,9 @@ func _on_body_entered(_body: Node) -> void:
 			hp = 0
 
 func fatass() -> void:
+	if EnemyCount.total_enemies >= EnemyCount.max_enemies:
+		queue_free()
+		return
 	visible = true
 	collision.disabled = false
 	damage_taken = false
@@ -123,15 +132,18 @@ func fatass() -> void:
 	just_repelled = false
 	repelled = false
 	EnemyCount.enemies += 1
+	EnemyCount.total_enemies += 1
 	remove_from_group("ded")
+	add_to_group("enemies")
 	var random = randf_range(1.5, 15.5)
 	var range = 300
 	mesh.scale = Vector3(random, random, random)
 	collision.scale = Vector3(random, random, random)
 	fatass_teto_2.scale = mesh.scale / 12
 	hp = random * random
+	eHp = hp
 	var base_speed = 300.0
-	var teto_chance = randi_range(1,150)
+	var teto_chance = randi_range(1,10)
 	if teto_chance >= 145:
 		hp = random * random * random
 		mass = hp * 6

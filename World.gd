@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 func spawn_idiots(delta: float) -> void:
 	if EnemyCount.enemies < 30:
 		for i in range(random):
-			if EnemyCount.enemies > 25:
+			if EnemyCount.enemies > 25 or EnemyCount.total_enemies > EnemyCount.max_enemies:
 				break
 			else:
 				var enemy_instance = enemy_scene.instantiate()

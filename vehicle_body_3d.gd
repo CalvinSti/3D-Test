@@ -4,15 +4,19 @@ extends VehicleBody3D
 @export var steer := 0.7
 @export var sensitivity := 0.1
 @export var wheels: Array[VehicleWheel3D]
+@export var rwheels: Array[VehicleWheel3D]
+#@export var trails: Array[GPUParticles3D]
+#@export var skid: PackedScene
 
+@export var curve: Curve
 @onready var timer = $Timer
 @onready var camera = $Twist/Pivot/Camera3D
-
-@export var grip: Curve
 
 const Purple = preload("uid://wx2k6jypw8ka")
 const Projectile = preload("uid://crs0jy5cyw5kv")
 const Ability = preload("uid://wx2k6jypw8ka")
+
+var Carhp = 100.0
 
 var twist_pivot := 0.0
 var vertical_pivot := 0.0
@@ -20,6 +24,9 @@ var ragdoll = false
 var player_hp := 100.0
 var ability_active = false
 var drifting = false
+var alreadyturning = false
+var dead = false
+var no_recoil = false
 
 @export var projectile_count = 1
 
@@ -28,44 +35,51 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	timer.start(2)
 
+
 func _physics_process(delta: float) -> void:
-	if not ability_active:
-		steering = move_toward(steering,Input.get_axis("Left", "Right") * steer, delta * 3.5)
+	if not ability_active or not dead:
 		engine_force = Input.get_axis("Back", "Forward") * power
+		if drifting:
+			steering = move_toward(steering,Input.get_axis("Left", "Right") * steer, delta * 1)
+		else:
+			steering = move_toward(steering,Input.get_axis("Left", "Right") * steer, delta * 75)
+
+		if Input.get_axis("Left", "Right") and not drifting:
+			power = 2850
+			alreadyturning = true
+			no_recoil =	false
+			if Input.is_action_pressed("drift"):
+				power = 1500
+		elif Input.get_axis("Left", "Right") and drifting:
+			if not alreadyturning:
+				power = 5000
+				no_recoil = true
+		else: 
+			power = 2850
+			drifting = false
+			alreadyturning = false
+			no_recoil = false
 
 	if Input.is_action_just_pressed("R"):
-		rotation.z = 0
+		#global_rotation.z = 0
+		global_rotation.x = 160
 		linear_velocity = Vector3(0,0,0)
 		angular_velocity = Vector3(0, 0 ,0)
-		global_position = Vector3.ZERO
+		global_position = Vector3(global_position.x, 10, global_position.z)
+		Car.visible = true
+		Carhp = 100
+		if dead:
+			dead = false
+		
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if Input.is_action_just_pressed("Forward"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if Input.is_action_pressed("Brake") or ability_active:
-		linear_velocity *= Vector3(0.995, 0, 0.995)
-		gravity_scale = 0
+		linear_velocity *= Vector3(0.995, 1, 0.995)
+		gravity_scale = 4
 	else:
 		gravity_scale = 4
-	if Input.is_action_pressed("drift"):
-		drifting = true
-	else: 
-		drifting = false
-		
-		
-
-	if drifting:
-		for wheel in wheels:
-			#var slip = abs(steering) 
-			#slip = clamp(slip, 0.0, 1.0)
-			#var friction = grip.sample_baked(slip)
-			#wheel.wheel_friction_slip = friction
-			#print(wheel.wheel_friction_slip)
-			pass
-	else:
-		for wheel in wheels:
-			#wheel.wheel_friction_slip = 1
-			pass
 
 	if Input.is_action_just_pressed("Ability") and not ability_active:
 		ability_active = true
@@ -88,10 +102,37 @@ func _physics_process(delta: float) -> void:
 	vertical_pivot = 0.0
 	$Twist/Pivot.rotation_degrees.z = clamp($Twist/Pivot.rotation_degrees.z, -40, 25)
 	$Twist/Pivot.rotation_degrees.x = clamp($Twist/Pivot.rotation_degrees.x, 0, 0)
+	
+	if global_position.y < -100:
+		global_position = Vector3(Car.global_position.x, 10, Car.global_position.z)
+		Carhp -= 10
+	
+	if Carhp <= 0:
+		Car.visible = false
+		dead = true
+	if Input.is_action_pressed("drift"):
+		drifting = true
+	else:
+		drifting = false
+		
+	if drifting:
+		for wheel in wheels:
+			var slip = abs(steering) 
+			slip = clamp(slip, 0.0, 1.0)
+			var friction = curve.sample_baked(slip)
+			wheel.wheel_friction_slip = friction
 
-func _get_point_velocity(point: Vector3) -> Vector3:
-	return linear_velocity + angular_velocity.cross(point - global_position)
-
+		for wheel in rwheels:
+			var slip = abs(steering) 
+			slip = clamp(slip, 0.0, 2)
+			var friction = curve.sample_baked(slip)
+			wheel.wheel_friction_slip = friction / 1.05
+	#else:
+		#for wheel in wheels:
+			#wheel.wheel_friction_slip = 10
+		#for wheel in rwheels:
+			#wheel.wheel_friction_slip = 10
+			
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -106,4 +147,19 @@ func _on_timer_timeout() -> void:
 			var instance = Projectile.instantiate()
 			add_sibling(instance)
 			timer.start(1)
-	
+
+
+func _on_body_entered(body: Node) -> void:
+	if body.is_in_group("enemies") and not Car.ability_active and not Car.no_recoil:
+		Car.Carhp -= 0
+		print(Car.no_recoil)
+	if body.is_in_group("enemies") and Car.no_recoil:
+		print(Car.no_recoil)
+		await get_tree().create_timer(1).timeout
+		Car.no_recoil = false
+	if body.is_in_group("floor"):
+		var contacts = 0
+		contacts += 1
+		print(contacts)
+		if contacts >= 3:
+			print("floor")

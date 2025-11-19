@@ -65,7 +65,7 @@ func _process(delta: float) -> void:
 			await get_tree().create_timer(2).timeout
 			for i in range(10):
 				scale *= Vector3(6.5, 6.5, 6.5)
-				explosion.radius *= 1000
+				explosion.radius *= 2000
 				await get_tree().create_timer(0.001).timeout
 			await get_tree().create_timer(0.5).timeout
 			scale = Vector3(1, 1, 1)

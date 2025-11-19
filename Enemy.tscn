@@ -6,7 +6,6 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tt7e2"]
 friction = 100.0
 rough = true
-bounce = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_s7bn3"]
 
@@ -34,6 +33,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_tt7e2")
 
 [node name="fatass teto2" parent="." instance=ExtResource("2_s7bn3")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+visible = false
 
 [node name="Circle" parent="fatass teto2" index="0"]
 transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, -9.249937, 0)
