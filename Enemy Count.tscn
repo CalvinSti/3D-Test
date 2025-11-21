@@ -2,14 +2,44 @@
 
 [ext_resource type="Script" uid="uid://dltyjb1su8lqb" path="res://Total enemies.gd" id="1_tpeva"]
 
-[node name="Node" type="Node2D"]
+[node name="Node" type="Node2D" node_paths=PackedStringArray("texts")]
 script = ExtResource("1_tpeva")
+texts = [NodePath("TextEdit"), NodePath("TextEdit2"), NodePath("TextEdit3"), NodePath("TextEdit4")]
 
 [node name="TextEdit" type="TextEdit" parent="."]
+visible = false
 offset_right = 203.0
 offset_bottom = 39.0
 text = "Player Kills: "
 editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="TextEdit2" type="TextEdit" parent="."]
+visible = false
+offset_top = 39.0
+offset_right = 203.0
+offset_bottom = 78.0
+text = "Hp: "
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="TextEdit3" type="TextEdit" parent="."]
+visible = false
+offset_top = 78.0
+offset_right = 203.0
+offset_bottom = 117.0
+text = "Drifting: "
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="TextEdit4" type="TextEdit" parent="."]
+visible = false
+offset_top = 117.0
+offset_right = 203.0
+offset_bottom = 156.0
+text = "No recoil: "
+editable = false
+metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="."]
 visible = false

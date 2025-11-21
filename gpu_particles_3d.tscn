@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cils26v842ulj"]
+[gd_scene load_steps=5 format=3 uid="uid://c1xgtd7e1vhec"]
 
 [sub_resource type="Curve" id="Curve_gvgjh"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.57303375), -0.7093308, 0.0, 0, 0]
@@ -9,6 +9,7 @@ curve = SubResource("Curve_gvgjh")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_47788"]
 particle_flag_align_y = true
+particle_flag_damping_as_friction = true
 gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveTexture_w13o2")
 color = Color(0, 0, 0, 1)
@@ -17,8 +18,7 @@ color = Color(0, 0, 0, 1)
 center_offset = Vector3(0, 1.39, 0)
 
 [node name="GPUParticles3D" type="GPUParticles3D"]
-amount = 15
-lifetime = 0.6
-speed_scale = 1.5
+amount = 25
+fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_47788")
 draw_pass_1 = SubResource("PlaneMesh_eryuy")

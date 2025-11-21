@@ -65,9 +65,9 @@ func _process(delta: float) -> void:
 			await get_tree().create_timer(2).timeout
 			for i in range(10):
 				scale *= Vector3(6.5, 6.5, 6.5)
-				explosion.radius *= 2000
+				explosion.radius *= 2100
 				await get_tree().create_timer(0.001).timeout
-			await get_tree().create_timer(0.5).timeout
+			await get_tree().create_timer(1).timeout
 			scale = Vector3(1, 1, 1)
 			explosion.radius = 1
 			Purple.visible = false
@@ -75,8 +75,10 @@ func _process(delta: float) -> void:
 			queue_free()
 
 	if scaling:
-		Purple.scale = Purple.scale.lerp(Vector3(12.5, 12.5, 12.5), delta * 0.35)
-		await get_tree().create_timer(2).timeout
+		Purple.scale = Purple.scale.lerp(Vector3(10, 10, 10), delta * 1.5)
+		await get_tree().create_timer(1).timeout
+		Purple.scale = Purple.scale.lerp(Vector3(12, 12, 12), delta * 0.01)
+		await get_tree().create_timer(1).timeout
 		scaling = false
 	if a:
 		Blue.scale = Red.scale.lerp(Vector3(2.5, 2.5, 2.5), delta * 0.45)

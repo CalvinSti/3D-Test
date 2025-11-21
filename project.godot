@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="3D test"
-run/main_scene="uid://ddf3rnkg4j1ua"
+run/main_scene="uid://cxwt4ovrd3063"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/show_image=false
 boot_splash/fullsize=false
@@ -26,7 +26,6 @@ Kills="*res://Enemy Count.tscn"
 
 [debug]
 
-settings/stdout/print_fps=true
 settings/directional_shadow/soft_shadow_filter_quality=3
 settings/positional_shadow/soft_shadow_filter_quality=2
 settings/fps=60

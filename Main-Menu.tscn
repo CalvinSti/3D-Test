@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxwt4ovrd3063"]
+[gd_scene load_steps=15 format=3 uid="uid://cxwt4ovrd3063"]
 
 [ext_resource type="Script" uid="uid://dsbybcqwo8x3p" path="res://main_menu.gd" id="1_gewly"]
 [ext_resource type="Texture2D" uid="uid://dxhre20hrr6o" path="res://texture_08.png" id="1_jlh7t"]
+[ext_resource type="PackedScene" uid="uid://csmbjgqkexuwd" path="res://MainMenuMenu.tscn" id="3_aqwir"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gewly"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -28,6 +29,26 @@ uv2_triplanar = true
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_fhmty"]
 data = PackedVector3Array(10.6375, 0, 10.1075, -10.6375, 0, 10.1075, 10.6375, 0, -10.1075, -10.6375, 0, 10.1075, -10.6375, 0, -10.1075, 10.6375, 0, -10.1075)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_81sh7"]
+friction = 0.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_aqwir"]
+top_radius = 7.0
+bottom_radius = 7.0
+height = 2.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqwir"]
+albedo_color = Color(0.40832946, 0.40832946, 0.40832946, 1)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_aqwir"]
+friction = 0.0
+rough = true
+bounce = 0.97
+absorbent = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_aqwir"]
+radius = 7.0
+
 [node name="Menu" type="Node3D"]
 script = ExtResource("1_gewly")
 
@@ -35,8 +56,8 @@ script = ExtResource("1_gewly")
 environment = SubResource("Environment_aqwir")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-light_color = Color(0.601223, 0.601223, 0.60122293, 1)
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0.79710233, 0)
+light_color = Color(0.8474744, 0.84747446, 0.84747446, 1)
 shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -51,4 +72,26 @@ transform = Transform3D(0.09530991, 0, 0, 0, 1, 0, 0, 0, 0.099999964, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_fhmty")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1472656, 3.264801)
+transform = Transform3D(-0.6670397, -0.26604494, 0.695901, 0, 0.9340674, 0.3570967, -0.7450222, 0.23819765, -0.6230601, 12.812559, 5.342071, -5.3447075)
+
+[node name="Node2D" parent="." instance=ExtResource("3_aqwir")]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_81sh7")
+gravity_scale = 0.0
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8364278, 0)
+mesh = SubResource("CylinderMesh_aqwir")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_aqwir")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="RigidBody3D/MeshInstance3D2"]
+disable_mode = 1
+collision_layer = 3
+collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_aqwir")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/MeshInstance3D2/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12311232, 0)
+shape = SubResource("CylinderShape3D_aqwir")

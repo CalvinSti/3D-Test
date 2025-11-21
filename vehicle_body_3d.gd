@@ -5,7 +5,7 @@ extends VehicleBody3D
 @export var sensitivity := 0.1
 @export var wheels: Array[VehicleWheel3D]
 @export var rwheels: Array[VehicleWheel3D]
-#@export var trails: Array[GPUParticles3D]
+@export var trails: Array[GPUParticles3D]
 #@export var skid: PackedScene
 
 @export var curve: Curve
@@ -20,23 +20,31 @@ var Carhp = 100.0
 
 var twist_pivot := 0.0
 var vertical_pivot := 0.0
-var ragdoll = false
+var hit = false
 var player_hp := 100.0
 var ability_active = false
 var drifting = false
 var alreadyturning = false
 var dead = false
 var no_recoil = false
+var menu = false
 
 @export var projectile_count = 1
 
 func _ready() -> void:
 	add_to_group("Player")
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	timer.start(2)
+	if get_tree().current_scene.scene_file_path.ends_with("Main-Menu.tscn"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		camera.current = false
+	else:
+		camera.current = true
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func _physics_process(delta: float) -> void:
+	if menu:
+		return
 	if not ability_active or not dead:
 		engine_force = Input.get_axis("Back", "Forward") * power
 		if drifting:
@@ -53,7 +61,10 @@ func _physics_process(delta: float) -> void:
 		elif Input.get_axis("Left", "Right") and drifting:
 			if not alreadyturning:
 				power = 5000
-				no_recoil = true
+				if not hit:
+					Car.no_recoil = true
+				else:
+					Car.no_recoil = false
 		else: 
 			power = 2850
 			drifting = false
@@ -61,11 +72,11 @@ func _physics_process(delta: float) -> void:
 			no_recoil = false
 
 	if Input.is_action_just_pressed("R"):
-		#global_rotation.z = 0
-		global_rotation.x = 160
+		global_rotation.z = 0
+		#global_rotation.x = 160
 		linear_velocity = Vector3(0,0,0)
 		angular_velocity = Vector3(0, 0 ,0)
-		global_position = Vector3(global_position.x, 10, global_position.z)
+		global_position = Vector3(global_position.x, 0, global_position.z)
 		Car.visible = true
 		Carhp = 100
 		if dead:
@@ -73,11 +84,9 @@ func _physics_process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if Input.is_action_just_pressed("Forward"):
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if Input.is_action_pressed("Brake") or ability_active:
-		linear_velocity *= Vector3(0.995, 1, 0.995)
-		gravity_scale = 4
+		linear_velocity *= Vector3(0.995, 0, 0.995)
+		gravity_scale = 0
 	else:
 		gravity_scale = 4
 
@@ -89,7 +98,7 @@ func _physics_process(delta: float) -> void:
 		axis_lock_angular_y = true
 		axis_lock_angular_x = true
 		axis_lock_angular_z = true
-		await get_tree().create_timer(12).timeout
+		await get_tree().create_timer(13).timeout
 		remove_from_group("Infinity")
 		axis_lock_angular_y = false
 		axis_lock_angular_x = false
@@ -132,6 +141,11 @@ func _physics_process(delta: float) -> void:
 			#wheel.wheel_friction_slip = 10
 		#for wheel in rwheels:
 			#wheel.wheel_friction_slip = 10
+	for trail in trails:
+		if drifting:
+			trail.emitting = true
+		else:
+			trail.emitting = false
 			
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -139,27 +153,36 @@ func _unhandled_input(event: InputEvent) -> void:
 			twist_pivot = -  event.relative.x * sensitivity
 			vertical_pivot = - event.relative.y * sensitivity
 
-func _on_timer_timeout() -> void:
-	if EnemyCount.enemies <= 0 or ability_active:
-		pass
-	else:
-		for i in projectile_count:
-			var instance = Projectile.instantiate()
-			add_sibling(instance)
-			timer.start(1)
+#func _on_timer_timeout() -> void:
+	#if EnemyCount.enemies <= 0 or ability_active:
+		#pass
+	#else:
+		#for i in projectile_count:
+			#var instance = Projectile.instantiate()
+			#add_sibling(instance)
+			#timer.start(1.5)
 
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("enemies") and not Car.ability_active and not Car.no_recoil:
-		Car.Carhp -= 0
-		print(Car.no_recoil)
+		Car.Carhp -= 1
 	if body.is_in_group("enemies") and Car.no_recoil:
-		print(Car.no_recoil)
+		hit = true
 		await get_tree().create_timer(1).timeout
-		Car.no_recoil = false
+		hit = false
 	if body.is_in_group("floor"):
-		var contacts = 0
-		contacts += 1
-		print(contacts)
-		if contacts >= 3:
-			print("floor")
+		if Car.global_position.y <= -5:
+			Car.Carhp -= 10
+			Car.global_rotation.z = 0
+			Car.global_position.y = 0
+			print("ow")
+
+func reset():
+	Car.global_position = Vector3(0,0,0)
+	Car.linear_velocity = Vector3(0,0,0)
+	Car.Carhp = 100
+	Car.global_rotation = Vector3(0,0,0)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Car.angular_velocity = Vector3(0,0,0)
+	EnemyCount.visible = true
+	Car.menu = false

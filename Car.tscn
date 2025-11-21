@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://f0ksna43wg02"]
 
 [ext_resource type="Script" uid="uid://he5t4lcsaahd" path="res://vehicle_body_3d.gd" id="1_1k6jk"]
-[ext_resource type="PackedScene" uid="uid://cils26v842ulj" path="res://gpu_particles_3d.tscn" id="2_y2uan"]
+[ext_resource type="PackedScene" uid="uid://c1xgtd7e1vhec" path="res://gpu_particles_3d.tscn" id="2_y2uan"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_y2uan"]
 friction = 0.0
@@ -20,9 +20,7 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_4xowi"]
 
-[node name="VehicleBody3D" type="VehicleBody3D" node_paths=PackedStringArray("wheels", "rwheels") groups=["Player"]]
-collision_layer = 3
-collision_mask = 3
+[node name="VehicleBody3D" type="VehicleBody3D" node_paths=PackedStringArray("wheels", "rwheels", "trails") groups=["Infinity", "Player"]]
 collision_priority = 4.0
 mass = 60.0
 physics_material_override = SubResource("PhysicsMaterial_y2uan")
@@ -31,13 +29,14 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.5, 0)
 continuous_cd = true
 contact_monitor = true
-max_contacts_reported = 3
+max_contacts_reported = 19
 script = ExtResource("1_1k6jk")
 power = 2850
 steer = -1.0
 sensitivity = 0.25
 wheels = [NodePath("VehicleWheel3D4"), NodePath("VehicleWheel3D5")]
 rwheels = [NodePath("VehicleWheel3D2"), NodePath("VehicleWheel3D3")]
+trails = [NodePath("VehicleWheel3D2/GPUParticles3D"), NodePath("VehicleWheel3D3/GPUParticles3D"), NodePath("VehicleWheel3D4/GPUParticles3D"), NodePath("VehicleWheel3D5/GPUParticles3D")]
 curve = SubResource("Curve_y2uan")
 projectile_count = 3
 
@@ -67,6 +66,7 @@ transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e
 mesh = SubResource("CylinderMesh_4xowi")
 
 [node name="GPUParticles3D" parent="VehicleWheel3D2" instance=ExtResource("2_y2uan")]
+emitting = false
 
 [node name="VehicleWheel3D3" type="VehicleWheel3D" parent="." groups=["wheel"]]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4, 3, -3)
@@ -86,6 +86,7 @@ transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e
 mesh = SubResource("CylinderMesh_4xowi")
 
 [node name="GPUParticles3D" parent="VehicleWheel3D3" instance=ExtResource("2_y2uan")]
+emitting = false
 
 [node name="VehicleWheel3D4" type="VehicleWheel3D" parent="." groups=["wheel"]]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 3, 3)
@@ -105,6 +106,7 @@ transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e
 mesh = SubResource("CylinderMesh_4xowi")
 
 [node name="GPUParticles3D" parent="VehicleWheel3D4" instance=ExtResource("2_y2uan")]
+emitting = false
 
 [node name="VehicleWheel3D5" type="VehicleWheel3D" parent="." groups=["wheel"]]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 3, -3)
@@ -124,6 +126,7 @@ transform = Transform3D(-1.293857e-07, -0.296, -1.2938573e-07, 2.96, -1.2938571e
 mesh = SubResource("CylinderMesh_4xowi")
 
 [node name="GPUParticles3D" parent="VehicleWheel3D5" instance=ExtResource("2_y2uan")]
+emitting = false
 
 [node name="Twist" type="Node3D" parent="."]
 

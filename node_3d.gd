@@ -43,13 +43,13 @@ func _physics_process(delta: float) -> void:
 		var horizontal = Vector3(direction.x, 0, direction.z) * speed
 		mesh.get_active_material(0).albedo_color = Color(1.0, 1.0, 1.0, 1.0)
 		
-		if Car.ability_active == true:
+		if Car.ability_active:
 			var dir = position - Car.global_position
 			var distance = dir.length()
 			if distance < repel_range:
 				linear_velocity *= 0.999
 				angular_velocity *= 0.99
-				gravity_scale = 0
+				gravity_scale = 0.05
 				linear_damp = 3
 				angular_damp = 0.5
 				just_repelled = true
@@ -65,11 +65,25 @@ func _physics_process(delta: float) -> void:
 		elif not repelled and just_repelled:
 			await get_tree().create_timer(0.5).timeout
 			just_repelled = false
+		#elif dead and already_dead:
+			#gravity_scale = 6
+			#linear_damp = 0
+			#angular_damp = 0
+			#return
 		else:
 			velocity.x = horizontal.x
 			velocity.z = horizontal.z
 			linear_velocity = velocity
-			
+		#
+		if Car.drifting:
+			collision_layer = 0 | 2
+			if is_teto:
+				collision_layer = 1
+		elif Car.ability_active:
+			collision_layer = 3 | 1
+			collision_mask = 3| 1
+		else:
+			collision_layer = 1 | 3
 	random = randf_range(1, 10)
 	
 	if dead and not already_dead:
@@ -118,7 +132,7 @@ func _on_body_entered(_body: Node) -> void:
 		if is_teto:
 			return
 		else:
-			hp = 0
+			hp = hp - hp
 
 func fatass() -> void:
 	if EnemyCount.total_enemies >= EnemyCount.max_enemies:
@@ -143,14 +157,15 @@ func fatass() -> void:
 	hp = random * random
 	eHp = hp
 	var base_speed = 300.0
-	var teto_chance = randi_range(1,10)
-	if teto_chance >= 145:
+	var teto_chance = randi_range(1,500)
+	if teto_chance >= 500:
 		hp = random * random * random
 		mass = hp * 6
 		fatass_teto_2.visible = true
 		mesh.visible = false
 		is_teto = true
 		speed = base_speed / (sqrt(hp) - 7)
+		var Mass = mass
 	else:
 		hp = random * random
 		mass = hp / 1.5
@@ -158,6 +173,7 @@ func fatass() -> void:
 		mesh.visible = true
 		is_teto = false
 		speed = base_speed / sqrt(hp)
+		var Mass = mass
 	#print(" speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
 	var random_pos = Car.global_position + Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
 	global_position = random_pos
