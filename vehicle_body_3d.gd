@@ -60,7 +60,7 @@ func _physics_process(delta: float) -> void:
 				power = 1500
 		elif Input.get_axis("Left", "Right") and drifting:
 			if not alreadyturning:
-				power = 5000
+				power = 6000
 				if not hit:
 					Car.no_recoil = true
 				else:
@@ -153,14 +153,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			twist_pivot = -  event.relative.x * sensitivity
 			vertical_pivot = - event.relative.y * sensitivity
 
-#func _on_timer_timeout() -> void:
-	#if EnemyCount.enemies <= 0 or ability_active:
-		#pass
-	#else:
-		#for i in projectile_count:
-			#var instance = Projectile.instantiate()
-			#add_sibling(instance)
-			#timer.start(1.5)
+func _on_timer_timeout() -> void:
+	if EnemyCount.enemies <= 0 or ability_active:
+		pass
+	else:
+		for i in projectile_count:
+			var instance = Projectile.instantiate()
+			add_sibling(instance)
+			timer.start(1.5)
 
 
 func _on_body_entered(body: Node) -> void:
@@ -171,6 +171,7 @@ func _on_body_entered(body: Node) -> void:
 		await get_tree().create_timer(1).timeout
 		hit = false
 	if body.is_in_group("floor"):
+		print(global_position.y)
 		if Car.global_position.y <= -5:
 			Car.Carhp -= 10
 			Car.global_rotation.z = 0

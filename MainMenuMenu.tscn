@@ -1,25 +1,42 @@
-[gd_scene load_steps=2 format=3 uid="uid://csmbjgqkexuwd"]
+[gd_scene load_steps=3 format=3 uid="uid://5pntm1wtlke4"]
 
-[ext_resource type="Script" uid="uid://ckgxpf8oqg2wb" path="res://main_menu_menu.gd" id="1_8cn5x"]
+[ext_resource type="Script" path="res://main_menu_menu.gd" id="1_8cn5x"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8cn5x"]
+font_size = 30
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_8cn5x")
 
 [node name="Button" type="Button" parent="."]
-offset_left = 526.0
-offset_top = 421.0
-offset_right = 589.0
-offset_bottom = 452.0
+offset_left = 425.0
+offset_top = 339.0
+offset_right = 675.0
+offset_bottom = 419.0
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 16
 text = "Play"
+metadata/_edit_use_anchors_ = true
 
 [node name="Button2" type="Button" parent="."]
-offset_left = 526.0
-offset_top = 455.0
-offset_right = 589.0
-offset_bottom = 486.0
+offset_left = 425.0
+offset_top = 456.0
+offset_right = 675.0
+offset_bottom = 536.0
 theme_override_constants/outline_size = 5
 text = "Setting"
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(5, 5)
+offset_left = 188.0
+offset_top = 102.0
+offset_right = 288.0
+offset_bottom = 152.0
+text = "Car Game"
+label_settings = SubResource("LabelSettings_8cn5x")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

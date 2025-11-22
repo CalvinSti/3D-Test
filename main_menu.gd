@@ -6,6 +6,6 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	rigid_body_3d.apply_torque(Vector3.UP * Input.get_axis("Left", "Right") * 5)
+	rigid_body_3d.apply_torque(Vector3.UP * Input.get_axis("Left", "Right") * 2.5)
 
-	Car.rotation.y = lerp_angle(Car.rotation.y, rigid_body_3d.rotation.y, 5 * delta)
+	Car.rotation.y = lerp_angle(Car.rotation.y, rigid_body_3d.rotation.y, 2.5 * delta)

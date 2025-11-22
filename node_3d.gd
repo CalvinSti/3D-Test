@@ -157,7 +157,7 @@ func fatass() -> void:
 	hp = random * random
 	eHp = hp
 	var base_speed = 300.0
-	var teto_chance = randi_range(1,500)
+	var teto_chance = randi_range(1,100)
 	if teto_chance >= 500:
 		hp = random * random * random
 		mass = hp * 6

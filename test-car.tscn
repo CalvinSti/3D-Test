@@ -8,6 +8,7 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 [sub_resource type="CylinderMesh" id="CylinderMesh_iaw44"]
 
 [node name="Node3D" type="VehicleBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.020000009, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(8.775427, 0, 0, 0, 1, 0, 0, 0, 4.451671, 0, 3.3754506, 0)

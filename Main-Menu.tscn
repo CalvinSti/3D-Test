@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dsbybcqwo8x3p" path="res://main_menu.gd" id="1_gewly"]
 [ext_resource type="Texture2D" uid="uid://dxhre20hrr6o" path="res://texture_08.png" id="1_jlh7t"]
-[ext_resource type="PackedScene" uid="uid://csmbjgqkexuwd" path="res://MainMenuMenu.tscn" id="3_aqwir"]
+[ext_resource type="PackedScene" uid="uid://5pntm1wtlke4" path="res://MainMenuMenu.tscn" id="3_aqwir"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gewly"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -72,7 +72,7 @@ transform = Transform3D(0.09530991, 0, 0, 0, 1, 0, 0, 0, 0.099999964, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_fhmty")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.6670397, -0.26604494, 0.695901, 0, 0.9340674, 0.3570967, -0.7450222, 0.23819765, -0.6230601, 12.812559, 5.342071, -5.3447075)
+transform = Transform3D(-0.7118177, -0.250812, 0.6560557, 1.1101697e-08, 0.9340674, 0.35709673, -0.7023644, 0.25418773, -0.66488564, 11.377432, 4.961702, -5.3826914)
 
 [node name="Node2D" parent="." instance=ExtResource("3_aqwir")]
 
