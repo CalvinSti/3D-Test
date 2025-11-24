@@ -29,6 +29,7 @@ var no_recoil = false
 var menu = false
 var Starting_power = power
 var wheel_collided = false
+var Domain_active = false
 @export var projectile_count = 1
 @export var friction = 10
 
@@ -103,6 +104,8 @@ func _physics_process(delta: float) -> void:
 	for wheel in wheels:
 		if wheel.is_in_contact() and ability_active:
 			wheel_collided = true
+		else:
+			wheel_collided = false
 	
 	twist.rotate_y(twist_pivot * delta)
 	pivot.global_rotation.z += vertical_pivot * delta
@@ -171,7 +174,6 @@ func _on_body_entered(body: Node) -> void:
 			global_rotation.z = 0
 			global_position.y = 0
 			print("ow")
-
 func reset():
 	global_position = Vector3(0,0,0)
 	linear_velocity = Vector3(0,0,0)

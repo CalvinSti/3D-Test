@@ -13,7 +13,7 @@ var damage_taken = false
 var random := 0
 var is_teto = false
 var eHp
-
+var domain = false
 @onready var timer = $Timer
 @onready var mesh = $MeshInstance3D
 @onready var collision = $CollisionShape3D
@@ -85,7 +85,7 @@ func _physics_process(delta: float) -> void:
 			collision_mask = 3| 1
 		else:
 			collision_layer = 1 | 3
-	random = randf_range(1, 10)
+	random = randf_range(1, 15.5)
 	
 	if dead and not already_dead:
 		already_dead = true
@@ -107,7 +107,12 @@ func _physics_process(delta: float) -> void:
 		
 	if global_position.y <= -50:
 		queue_free()
-	
+		
+	if domain and Global.Car.Domain_active:
+		hp -= 0.1
+		apply_central_impulse(- global_position.direction_to(Vector3(player.global_position.x, -50, player.global_position.z)) * scale.length())
+		apply_torque_impulse(Vector3(random * random, random * random, random * random))
+		
 func _on_body_entered(_body: Node) -> void:
 	if _body == player and not damage_taken:
 		damage_taken = true
@@ -134,7 +139,8 @@ func _on_body_entered(_body: Node) -> void:
 			return
 		else:
 			hp = hp - hp
-
+	if _body.is_in_group("Domain"):
+		domain = true
 func fatass() -> void:
 	if EnemyCount.total_enemies >= EnemyCount.max_enemies:
 		queue_free()
@@ -146,6 +152,7 @@ func fatass() -> void:
 	dead = false
 	just_repelled = false
 	repelled = false
+	domain = false
 	EnemyCount.enemies += 1
 	EnemyCount.total_enemies += 1
 	remove_from_group("ded")
@@ -158,7 +165,7 @@ func fatass() -> void:
 	hp = random * random
 	eHp = hp
 	var base_speed = 300.0
-	var teto_chance = randi_range(1,100)
+	var teto_chance = randi_range(1,80)
 	if teto_chance >= 100:
 		hp = random * random * random
 		mass = hp * 6

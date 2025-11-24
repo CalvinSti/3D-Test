@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cr5cfjuwaob1n"]
+[gd_scene load_steps=13 format=3 uid="uid://cr5cfjuwaob1n"]
 
 [ext_resource type="Script" uid="uid://c1fwqbynab0te" path="res://domain_expansion.gd" id="1_ybffy"]
 
@@ -15,15 +15,53 @@ absorbent = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ybffy"]
 albedo_color = Color(1, 0, 0, 1)
 
-[node name="DomainExpansion" type="RigidBody3D"]
+[sub_resource type="Curve" id="Curve_scv4s"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.37785715), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_die2a"]
+curve = SubResource("Curve_scv4s")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3vq86"]
+lifetime_randomness = 1.0
+particle_flag_align_y = true
+emission_shape_scale = Vector3(10, 10, 10)
+emission_shape = 1
+emission_sphere_radius = 128.0
+spread = 180.0
+initial_velocity_min = 67.74
+initial_velocity_max = 67.74
+scale_min = 2.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_die2a")
+
+[sub_resource type="Curve" id="Curve_v4e02"]
+_data = [Vector2(0.0065789446, 0), 0.0, 0.0, 0, 0, Vector2(0.5690789, 0.3681758), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mhj2i"]
+albedo_color = Color(0.67481464, 0.67481464, 0.6748146, 1)
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_ne44h"]
+material = SubResource("StandardMaterial3D_mhj2i")
+section_length = 3.0
+curve = SubResource("Curve_v4e02")
+
+[node name="DomainExpansion" type="RigidBody3D" groups=["Domain"]]
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 mass = 0.001
 physics_material_override = SubResource("PhysicsMaterial_mhj2i")
 gravity_scale = 0.0
 script = ExtResource("1_ybffy")
 
-[node name="Area3D" type="StaticBody3D" parent="."]
-collision_layer = 7
-collision_mask = 7
+[node name="Area3D" type="StaticBody3D" parent="." groups=["Domain"]]
+collision_layer = 6
+collision_mask = 6
 collision_priority = 5.0
 physics_material_override = SubResource("PhysicsMaterial_ybffy")
 
@@ -35,3 +73,22 @@ shape = SubResource("BoxShape3D_ybffy")
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
 mesh = SubResource("BoxMesh_wv8p7")
 surface_material_override/0 = SubResource("StandardMaterial3D_ybffy")
+
+[node name="slashes" type="GPUParticles3D" parent="." groups=["Domain"]]
+visible = false
+amount = 500
+speed_scale = 5.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_3vq86")
+draw_pass_1 = SubResource("RibbonTrailMesh_ne44h")
+
+[node name="Area3D2" type="StaticBody3D" parent="." groups=["Domain"]]
+collision_priority = 5.0
+physics_material_override = SubResource("PhysicsMaterial_ybffy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
+shape = SubResource("BoxShape3D_ybffy")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
