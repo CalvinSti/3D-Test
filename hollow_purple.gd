@@ -7,6 +7,7 @@ extends Node3D
 
 @onready var Gojo_yap = $AudioStreamPlayer2D
 @onready var timer = $Timer
+@onready var Car = Global.Car
 
 var e = false
 var a = false
@@ -71,9 +72,10 @@ func _process(delta: float) -> void:
 			scale = Vector3(1, 1, 1)
 			explosion.radius = 1
 			Purple.visible = false
+			Car.ability_active = false
 			await get_tree().create_timer(5).timeout
 			queue_free()
-
+	
 	if scaling:
 		Purple.scale = Purple.scale.lerp(Vector3(10, 10, 10), delta * 1.5)
 		await get_tree().create_timer(1).timeout
@@ -85,3 +87,18 @@ func _process(delta: float) -> void:
 		Red.scale = Red.scale.lerp(Vector3(2.5, 2.5, 2.5), delta * 0.45)
 		await get_tree().create_timer(2).timeout
 		a = false
+	if Car.ability_active:
+		Car.add_to_group("Infinity")
+		Car.axis_lock_angular_y = true
+		Car.axis_lock_angular_x = true
+		Car.axis_lock_angular_z = true
+		Car.linear_velocity *= Vector3(0.995, 0, 0.995)
+		Car.gravity_scale = 0
+		await get_tree().create_timer(13).timeout
+		Car.remove_from_group("Infinity")
+		Car.axis_lock_angular_y = false
+		Car.axis_lock_angular_x = false
+		Car.axis_lock_angular_z = false
+		Car.ability_active = false
+	else:
+		Car.gravity_scale = 4

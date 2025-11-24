@@ -4,7 +4,7 @@
 
 [node name="Node" type="Node2D" node_paths=PackedStringArray("texts")]
 script = ExtResource("1_tpeva")
-texts = [NodePath("TextEdit"), NodePath("TextEdit2"), NodePath("TextEdit3"), NodePath("TextEdit4")]
+texts = [NodePath("TextEdit"), NodePath("TextEdit2"), NodePath("TextEdit3"), NodePath("TextEdit4"), NodePath("TextEdit5")]
 
 [node name="TextEdit" type="TextEdit" parent="."]
 visible = false
@@ -38,6 +38,15 @@ offset_top = 117.0
 offset_right = 203.0
 offset_bottom = 156.0
 text = "No recoil: "
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="TextEdit5" type="TextEdit" parent="."]
+visible = false
+offset_top = 156.0
+offset_right = 203.0
+offset_bottom = 195.0
+text = "Power: "
 editable = false
 metadata/_edit_use_anchors_ = true
 

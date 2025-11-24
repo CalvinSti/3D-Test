@@ -20,9 +20,11 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Car="*res://Car.tscn"
 EnemyCount="*res://Enemy Count.tscn"
 Kills="*res://Enemy Count.tscn"
+VehicleManager="*res://vehicle_selector.tscn"
+Global="*res://Global.gd"
+startmenu="*res://start_menu.tscn"
 
 [debug]
 

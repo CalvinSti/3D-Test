@@ -1,11 +1,33 @@
-[gd_scene load_steps=15 format=3 uid="uid://cxwt4ovrd3063"]
+[gd_scene load_steps=19 format=3 uid="uid://cxwt4ovrd3063"]
 
-[ext_resource type="Script" uid="uid://dsbybcqwo8x3p" path="res://main_menu.gd" id="1_gewly"]
-[ext_resource type="Texture2D" uid="uid://dxhre20hrr6o" path="res://texture_08.png" id="1_jlh7t"]
-[ext_resource type="PackedScene" uid="uid://5pntm1wtlke4" path="res://MainMenuMenu.tscn" id="3_aqwir"]
+[ext_resource type="Script" uid="uid://he5t4lcsaahd" path="res://vehicle_body_3d.gd" id="1_aqwir"]
+[ext_resource type="PackedScene" uid="uid://cn1otyfm7d46e" path="res://vehicle_selector.tscn" id="2_gewly"]
+[ext_resource type="PackedScene" uid="uid://dn8136de2t6ox" path="res://start_menu.tscn" id="3_81sh7"]
+
+[sub_resource type="GDScript" id="GDScript_81sh7"]
+resource_local_to_scene = true
+script/source = "extends  Node3D
+
+@onready var rigid_body_3d: RigidBody3D = $RigidBody3D
+
+func _ready() -> void:
+	VehicleManager.set_vehicle(\"Car\")  
+	var car_instance = VehicleManager.spawn_vehicle(self)
+	Global.Car = car_instance
+	VehicleManager.visible = false
+	Global.Car.menu = true
+
+
+func _physics_process(delta: float) -> void:
+	rigid_body_3d.apply_torque(Vector3.UP * Input.get_axis(\"Left\", \"Right\") * 2.5)
+	Global.Car.rotation.y = lerp_angle(Global.Car.rotation.y, rigid_body_3d.rotation.y, delta * 5)
+	
+"
+metadata/current = ExtResource("1_aqwir")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gewly"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+sky_curve = 83.37678
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
 [sub_resource type="Sky" id="Sky_a202f"]
@@ -19,8 +41,7 @@ tonemap_mode = 2
 [sub_resource type="PlaneMesh" id="PlaneMesh_81sh7"]
 
 [sub_resource type="ORMMaterial3D" id="ORMMaterial3D_0idhx"]
-albedo_color = Color(0.8732984, 0.8732984, 0.8732984, 1)
-albedo_texture = ExtResource("1_jlh7t")
+albedo_color = Color(0.5372549, 0.29803923, 0, 1)
 uv1_scale = Vector3(75, 75, 75)
 uv1_triplanar = true
 uv2_scale = Vector3(0.5, 0.5, 0.5)
@@ -49,19 +70,27 @@ absorbent = true
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_aqwir"]
 radius = 7.0
 
+[sub_resource type="BoxMesh" id="BoxMesh_81sh7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0idhx"]
+albedo_color = Color(0.4332268, 0.42855835, 0.40348172, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fhmty"]
+albedo_color = Color(0.43137255, 0.42745098, 0.40392157, 1)
+
 [node name="Menu" type="Node3D"]
-script = ExtResource("1_gewly")
+script = SubResource("GDScript_81sh7")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_aqwir")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0.79710233, 0)
-light_color = Color(0.8474744, 0.84747446, 0.84747446, 1)
+transform = Transform3D(1, 0, 0, 0, -0.35210305, 0.9359612, 0, -0.9359612, -0.35210305, 0, 28.373167, -17.48861)
+light_energy = 0.5
 shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(4000, 0, 0, 0, 4000, 0, 0, 0, 4000, 0, 0, 0)
+transform = Transform3D(51.312775, 0, 0, 0, 4000, 0, 0, 0, 33.718758, 0, 0, 0)
 mesh = SubResource("PlaneMesh_81sh7")
 surface_material_override/0 = SubResource("ORMMaterial3D_0idhx")
 
@@ -73,8 +102,6 @@ shape = SubResource("ConcavePolygonShape3D_fhmty")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.7118177, -0.250812, 0.6560557, 1.1101697e-08, 0.9340674, 0.35709673, -0.7023644, 0.25418773, -0.66488564, 11.377432, 4.961702, -5.3826914)
-
-[node name="Node2D" parent="." instance=ExtResource("3_aqwir")]
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 physics_material_override = SubResource("PhysicsMaterial_81sh7")
@@ -95,3 +122,28 @@ physics_material_override = SubResource("PhysicsMaterial_aqwir")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/MeshInstance3D2/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12311232, 0)
 shape = SubResource("CylinderShape3D_aqwir")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+
+[node name="StartMenu" parent="CanvasGroup" instance=ExtResource("3_81sh7")]
+
+[node name="VehicleSelector" parent="CanvasGroup" instance=ExtResource("2_gewly")]
+visible = false
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.49518514, 0, 0, 0, 18.8547, 0, 0, 0, 49.03036, -29.015139, 9.265266, 0)
+mesh = SubResource("BoxMesh_81sh7")
+surface_material_override/0 = SubResource("StandardMaterial3D_0idhx")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.1645231e-08, 0, -54.34478, 0, 18.8547, 0, 0.4951851, 0, -2.375485e-06, -3.1256943, 9.265266, 18.114763)
+mesh = SubResource("BoxMesh_81sh7")
+surface_material_override/0 = SubResource("StandardMaterial3D_fhmty")
+
+[connection signal="pressed" from="CanvasGroup/VehicleSelector/VBoxContainer/Car1" to="." method="_on_car_1_pressed"]
+[connection signal="pressed" from="CanvasGroup/VehicleSelector/VBoxContainer/Car2" to="." method="_on_car_2_pressed"]
+[connection signal="pressed" from="CanvasGroup/VehicleSelector/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="CanvasGroup/VehicleSelector/Back" to="." method="_on_back_pressed"]
+
+[editable path="CanvasGroup/StartMenu"]
+[editable path="CanvasGroup/VehicleSelector"]

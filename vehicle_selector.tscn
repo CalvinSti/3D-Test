@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://cn1otyfm7d46e"]
+
+[ext_resource type="Script" uid="uid://b6kacjj7r42tm" path="res://vehicle_selector.gd" id="1_o166r"]
+
+[node name="VehicleSelector" type="Node2D"]
+script = ExtResource("1_o166r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 177.0
+offset_top = 240.0
+offset_right = 225.0
+offset_bottom = 341.0
+
+[node name="Car1" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Car"
+
+[node name="Car2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Motorcycle"
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Truck
+"
+
+[node name="StartGame" type="Button" parent="."]
+offset_left = 745.0
+offset_top = 558.0
+offset_right = 791.0
+offset_bottom = 589.0
+text = "Start
+"
+
+[node name="Back" type="Button" parent="."]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 53.0
+offset_bottom = 36.0
+text = "Back
+"
+
+[connection signal="pressed" from="VBoxContainer/Car1" to="." method="_on_car_1_pressed"]
+[connection signal="pressed" from="VBoxContainer/Car2" to="." method="_on_car_2_pressed"]
+[connection signal="pressed" from="StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

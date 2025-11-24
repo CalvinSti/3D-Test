@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://f0ksna43wg02"]
+[gd_scene load_steps=10 format=3 uid="uid://f0ksna43wg02"]
 
 [ext_resource type="Script" uid="uid://he5t4lcsaahd" path="res://vehicle_body_3d.gd" id="1_1k6jk"]
+[ext_resource type="PackedScene" uid="uid://crs0jy5cyw5kv" path="res://Projectile.tscn" id="2_w13o2"]
 [ext_resource type="PackedScene" uid="uid://c1xgtd7e1vhec" path="res://gpu_particles_3d.tscn" id="2_y2uan"]
+[ext_resource type="PackedScene" uid="uid://wx2k6jypw8ka" path="res://Hollow-Purple.tscn" id="3_47788"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_y2uan"]
-friction = 0.0
 rough = true
 absorbent = true
 
@@ -20,7 +21,7 @@ points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_4xowi"]
 
-[node name="VehicleBody3D" type="VehicleBody3D" node_paths=PackedStringArray("wheels", "rwheels", "trails") groups=["Infinity", "Player"]]
+[node name="VehicleBody3D" type="VehicleBody3D" node_paths=PackedStringArray("wheels", "rwheels", "trails") groups=["Player"]]
 collision_priority = 4.0
 mass = 60.0
 physics_material_override = SubResource("PhysicsMaterial_y2uan")
@@ -29,7 +30,7 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.5, 0)
 continuous_cd = true
 contact_monitor = true
-max_contacts_reported = 19
+max_contacts_reported = 1
 script = ExtResource("1_1k6jk")
 power = 2850
 steer = -1.0
@@ -38,6 +39,8 @@ wheels = [NodePath("VehicleWheel3D4"), NodePath("VehicleWheel3D5")]
 rwheels = [NodePath("VehicleWheel3D2"), NodePath("VehicleWheel3D3")]
 trails = [NodePath("VehicleWheel3D2/GPUParticles3D"), NodePath("VehicleWheel3D3/GPUParticles3D"), NodePath("VehicleWheel3D4/GPUParticles3D"), NodePath("VehicleWheel3D5/GPUParticles3D")]
 curve = SubResource("Curve_y2uan")
+Projectile = ExtResource("2_w13o2")
+Ability = ExtResource("3_47788")
 projectile_count = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

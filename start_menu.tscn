@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn8136de2t6ox"]
+
+[ext_resource type="Script" uid="uid://dweis01uems62" path="res://start_menu.gd" id="1_jwbto"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_81sh7"]
+font_size = 30
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[node name="StartMenu" type="Node2D"]
+script = ExtResource("1_jwbto")
+
+[node name="Start" type="Button" parent="."]
+offset_left = 425.0
+offset_top = 339.0
+offset_right = 675.0
+offset_bottom = 419.0
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 16
+text = "Play"
+
+[node name="Setting" type="Button" parent="."]
+offset_left = 425.0
+offset_top = 456.0
+offset_right = 675.0
+offset_bottom = 536.0
+theme_override_constants/outline_size = 5
+text = "Setting"
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(5, 5)
+offset_left = 188.0
+offset_top = 102.0
+offset_right = 288.0
+offset_bottom = 152.0
+text = "Car Game"
+label_settings = SubResource("LabelSettings_81sh7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]

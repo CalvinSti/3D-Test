@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr5cfjuwaob1n"]
+
+[ext_resource type="Script" uid="uid://c1fwqbynab0te" path="res://domain_expansion.gd" id="1_ybffy"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mhj2i"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ybffy"]
+rough = true
+absorbent = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ybffy"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wv8p7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ybffy"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="DomainExpansion" type="RigidBody3D"]
+mass = 0.001
+physics_material_override = SubResource("PhysicsMaterial_mhj2i")
+gravity_scale = 0.0
+script = ExtResource("1_ybffy")
+
+[node name="Area3D" type="StaticBody3D" parent="."]
+collision_layer = 7
+collision_mask = 7
+collision_priority = 5.0
+physics_material_override = SubResource("PhysicsMaterial_ybffy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
+shape = SubResource("BoxShape3D_ybffy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
+mesh = SubResource("BoxMesh_wv8p7")
+surface_material_override/0 = SubResource("StandardMaterial3D_ybffy")

@@ -1,6 +1,7 @@
 extends RigidBody3D
 
-var player = Car
+var player = Global.Car
+var Car = Global.Car
 var hp = 100
 var speed := 25
 var collided = false
@@ -28,7 +29,7 @@ func _ready() -> void:
 	fatass()
 	
 func _physics_process(delta: float) -> void:
-	if Car.dead:
+	if Global.Car.dead:
 		return
 	var direction = position.direction_to(player.global_position).normalized() 
 	if collided and hp > 0:
@@ -43,7 +44,7 @@ func _physics_process(delta: float) -> void:
 		var horizontal = Vector3(direction.x, 0, direction.z) * speed
 		mesh.get_active_material(0).albedo_color = Color(1.0, 1.0, 1.0, 1.0)
 		
-		if Car.ability_active:
+		if Car.is_in_group("Infinity"):
 			var dir = position - Car.global_position
 			var distance = dir.length()
 			if distance < repel_range:
@@ -158,7 +159,7 @@ func fatass() -> void:
 	eHp = hp
 	var base_speed = 300.0
 	var teto_chance = randi_range(1,100)
-	if teto_chance >= 500:
+	if teto_chance >= 100:
 		hp = random * random * random
 		mass = hp * 6
 		fatass_teto_2.visible = true
@@ -175,7 +176,7 @@ func fatass() -> void:
 		speed = base_speed / sqrt(hp)
 		var Mass = mass
 	#print(" speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
-	var random_pos = Car.global_position + Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
+	var random_pos = Global.Car.global_position + Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
 	global_position = random_pos
 	
 func _on_timer_timeout() -> void:

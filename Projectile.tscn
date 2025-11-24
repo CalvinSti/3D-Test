@@ -7,6 +7,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_t7eop"]
 
 [node name="Node3D" type="RigidBody3D" groups=["projectile"]]
+transform = Transform3D(-1, 4.371139e-08, 8.742278e-08, -8.742278e-08, 1.9106857e-15, -1, -4.371139e-08, -1, 1.9106855e-15, 0, 0, 0)
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 1

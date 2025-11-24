@@ -4,10 +4,11 @@ extends Node3D
 @onready var timer: Timer = $Timer
 var random = 0
 
+var player_car: Node = null
 
 func _ready() -> void:
+	Global.Car = VehicleManager.spawn_vehicle(self)
 	timer.start()
-	
 
 func _process(delta: float) -> void:
 	random = randf_range(1, 10)
