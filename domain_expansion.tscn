@@ -48,6 +48,8 @@ section_length = 3.0
 curve = SubResource("Curve_v4e02")
 
 [node name="DomainExpansion" type="RigidBody3D" groups=["Domain"]]
+collision_layer = 6
+collision_mask = 6
 axis_lock_linear_x = true
 axis_lock_linear_y = true
 axis_lock_linear_z = true
@@ -83,6 +85,7 @@ process_material = SubResource("ParticleProcessMaterial_3vq86")
 draw_pass_1 = SubResource("RibbonTrailMesh_ne44h")
 
 [node name="Area3D2" type="StaticBody3D" parent="." groups=["Domain"]]
+collision_mask = 0
 collision_priority = 5.0
 physics_material_override = SubResource("PhysicsMaterial_ybffy")
 

@@ -16,6 +16,7 @@ func _ready() -> void:
 	start()
 
 func start():
+	await get_tree().create_timer(2).timeout
 	area_3d.scale = Vector3(1,1,1)
 	visible = true
 	e = true
@@ -27,11 +28,15 @@ func _process(delta: float) -> void:
 		#translate(Vector3(0, 0.5, 0))
 		global_position = global_position.lerp(Vector3(Car.global_position.x, 30, Car.global_position.z), delta * 0.3)
 		area_3d.scale = Vector3(1,1,1)
+		global_rotation.z = 0
+		global_rotation.x = 0
 	if Global.Car.wheel_collided and e:
 		e = false
 		b = false
 		a = true
 	if a and Global.Car.wheel_collided:
+		Car.global_rotation.x = 0
+		Car.global_rotation.z = 0
 		Car.global_position = Car.global_position.lerp(Vector3(Car.global_position.x, 35,Car.global_position.z), delta * 0.3)
 		await get_tree().create_timer(0.5).timeout
 		Car.global_position = Car.global_position.lerp(Vector3(Car.global_position.x, 20, Car.global_position.z), delta * 1)
@@ -55,7 +60,7 @@ func _process(delta: float) -> void:
 		Car.Domain_active = false
 		Car.ability_active = false
 		Car.axis_lock_angular_y = false
-		Car.axis_lock_angular_z = true
+		Car.axis_lock_angular_z = false
 		Car.gravity_scale = 3
 		slashes.visible = false
 		area_3d.scale = Vector3(1,1,1)

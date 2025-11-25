@@ -6,7 +6,7 @@ var vehicle_instance : Node = null
 
 var vehicles := {
 	"Car": preload("res://Car.tscn"),
-	"Test": preload("res://test-car.tscn")
+	"Motorcycle": preload("res://Motorcycles.tscn")
 }
 
 func _ready() -> void:
@@ -32,7 +32,7 @@ func _on_car_1_pressed() -> void:
 	Global.Car.menu = true
 	
 func _on_car_2_pressed() -> void:
-	VehicleManager.set_vehicle("Test")
+	VehicleManager.set_vehicle("Motorcycle")
 	var car = VehicleManager.spawn_vehicle(self)
 	Global.Car = vehicle_instance 
 	Global.Car.menu = true

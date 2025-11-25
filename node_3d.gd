@@ -27,7 +27,50 @@ func _ready() -> void:
 	mesh.material_override = mesh.get_active_material(0).duplicate()
 	add_to_group("enemies")
 	fatass()
-	
+
+func fatass() -> void:
+	if EnemyCount.total_enemies >= EnemyCount.max_enemies:
+		queue_free()
+		return
+	visible = true
+	collision.disabled = false
+	damage_taken = false
+	already_dead = false
+	dead = false
+	just_repelled = false
+	repelled = false
+	domain = false
+	EnemyCount.enemies += 1
+	EnemyCount.total_enemies += 1
+	remove_from_group("ded")
+	add_to_group("enemies")
+	var random = randf_range(1.5, 15.5)
+	var range = 300
+	mesh.scale = Vector3(random, random, random)
+	collision.scale = Vector3(random, random, random)
+	fatass_teto_2.scale = mesh.scale / 12
+	var base_speed = 300.0
+	var teto_chance = randi_range(1,100)
+	if teto_chance >= 50:
+		hp = random * random * random
+		mass = hp * 6
+		fatass_teto_2.visible = true
+		mesh.visible = false
+		is_teto = true
+		speed = base_speed / (sqrt(hp) - 7)
+		var Mass = mass
+	else:
+		hp = random * random
+		mass = hp / 1.5
+		fatass_teto_2.visible = false
+		mesh.visible = true
+		is_teto = false
+		speed = base_speed / sqrt(hp)
+		var Mass = mass
+	#print(" speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
+	var random_pos = Global.Car.global_position + Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
+	global_position = random_pos
+
 func _physics_process(delta: float) -> void:
 	if Global.Car.dead:
 		return
@@ -108,11 +151,13 @@ func _physics_process(delta: float) -> void:
 	if global_position.y <= -50:
 		queue_free()
 		
-	if domain and Global.Car.Domain_active:
-		hp -= 0.1
-		apply_central_impulse(- global_position.direction_to(Vector3(player.global_position.x, -50, player.global_position.z)) * scale.length())
-		apply_torque_impulse(Vector3(random * random, random * random, random * random))
 		
+	if domain and Global.Car.Domain_active:
+		if not is_teto:
+			hp -= 0.1
+			apply_central_impulse(- global_position.direction_to(Vector3(player.global_position.x, -50, player.global_position.z)) * scale.length())
+			apply_torque_impulse(Vector3(randf_range(-random, random), randf_range(-random, random), randf_range(-random, random) * 100))
+
 func _on_body_entered(_body: Node) -> void:
 	if _body == player and not damage_taken:
 		damage_taken = true
@@ -141,50 +186,6 @@ func _on_body_entered(_body: Node) -> void:
 			hp = hp - hp
 	if _body.is_in_group("Domain"):
 		domain = true
-func fatass() -> void:
-	if EnemyCount.total_enemies >= EnemyCount.max_enemies:
-		queue_free()
-		return
-	visible = true
-	collision.disabled = false
-	damage_taken = false
-	already_dead = false
-	dead = false
-	just_repelled = false
-	repelled = false
-	domain = false
-	EnemyCount.enemies += 1
-	EnemyCount.total_enemies += 1
-	remove_from_group("ded")
-	add_to_group("enemies")
-	var random = randf_range(1.5, 15.5)
-	var range = 300
-	mesh.scale = Vector3(random, random, random)
-	collision.scale = Vector3(random, random, random)
-	fatass_teto_2.scale = mesh.scale / 12
-	hp = random * random
-	eHp = hp
-	var base_speed = 300.0
-	var teto_chance = randi_range(1,80)
-	if teto_chance >= 100:
-		hp = random * random * random
-		mass = hp * 6
-		fatass_teto_2.visible = true
-		mesh.visible = false
-		is_teto = true
-		speed = base_speed / (sqrt(hp) - 7)
-		var Mass = mass
-	else:
-		hp = random * random
-		mass = hp / 1.5
-		fatass_teto_2.visible = false
-		mesh.visible = true
-		is_teto = false
-		speed = base_speed / sqrt(hp)
-		var Mass = mass
-	#print(" speed: ", speed , " mass: ", mass, " hp: ", hp, " gravity: ", gravity_scale)
-	var random_pos = Global.Car.global_position + Vector3(randf_range(-range, range), mesh.scale.x, randf_range(-range, range))
-	global_position = random_pos
 	
 func _on_timer_timeout() -> void:
 	collided = false
